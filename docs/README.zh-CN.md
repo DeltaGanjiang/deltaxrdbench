@@ -5,9 +5,9 @@
 
 **A reproducible benchmark for X-ray diffraction phase identification and refinement.**
 
-[English](../README.md) · [Overview](README.zh-CN.md) · [Japanese](README.ja.md) · [Korean](README.ko.md)
+[English](https://github.com/Asterbin/xrdbench/blob/main/README.md) · [Overview](https://github.com/Asterbin/xrdbench/blob/main/docs/README.zh-CN.md) · [Japanese](https://github.com/Asterbin/xrdbench/blob/main/docs/README.ja.md) · [Korean](https://github.com/Asterbin/xrdbench/blob/main/docs/README.ko.md)
 
-For a browser-friendly bilingual walkthrough with one-click Chinese/English switching, open the [HTML getting-started guide](GETTING_STARTED.zh-CN.html).
+For a browser-friendly bilingual walkthrough with one-click Chinese/English switching, open the [HTML getting-started guide](https://github.com/Asterbin/xrdbench/blob/main/docs/GETTING_STARTED.zh-CN.html).
 
 ## Evaluation tracks
 
@@ -57,7 +57,7 @@ Models should submit standard CIF files rather than internal database IDs. XRDBe
 
 Single-phase samples require one CIF. Multi-phase samples require two or three CIFs. The filename and textual CIF formatting do not affect the result. Internal phase IDs remain available only for compatibility and dataset auditing.
 
-See [submission.jsonl examples](../domo/README.md) for CIF paths, pymatgen `Structure` objects, CIF text, and legacy phase-ID submissions.
+See [submission.jsonl examples](https://github.com/Asterbin/xrdbench/blob/main/domo/README.md) for CIF paths, pymatgen `Structure` objects, CIF text, and legacy phase-ID submissions.
 
 ## Dataset contents
 

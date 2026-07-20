@@ -2,7 +2,7 @@
 
 For XRDBench identification evaluation, models should submit **CIF crystal-structure files**. You do not need to know internal identifiers such as `RRUFF:R120044` or `MP:mp-123`: the evaluator structurally matches each predicted CIF against a hidden reference CIF.
 
-This directory includes [make_submission.py](make_submission.py), a small JSONL-writing helper that can be copied into a model project.
+This directory includes [make_submission.py](https://github.com/Asterbin/xrdbench/blob/main/domo/make_submission.py), a small JSONL-writing helper that can be copied into a model project.
 
 ## File contract
 

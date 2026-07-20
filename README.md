@@ -6,13 +6,13 @@
 
 **A reproducible benchmark for X-ray diffraction phase identification and refinement.**
 
-[English](README.md) · [Overview](docs/README.zh-CN.md) · [Japanese](docs/README.ja.md) · [Korean](docs/README.ko.md)
+[English](https://github.com/Asterbin/xrdbench/blob/main/README.md) · [Overview](https://github.com/Asterbin/xrdbench/blob/main/docs/README.zh-CN.md) · [Japanese](https://github.com/Asterbin/xrdbench/blob/main/docs/README.ja.md) · [Korean](https://github.com/Asterbin/xrdbench/blob/main/docs/README.ko.md)
 
-New to the project? Start with the [bilingual step-by-step HTML guide](docs/GETTING_STARTED.zh-CN.html).
+New to the project? Start with the [bilingual step-by-step HTML guide](https://github.com/Asterbin/xrdbench/blob/main/docs/GETTING_STARTED.zh-CN.html).
 
-Need to write a model output? See the [submission.jsonl examples](domo/README.md).
+Need to write a model output? See the [submission.jsonl examples](https://github.com/Asterbin/xrdbench/blob/main/domo/README.md).
 
-Want a visual tour of every dataset and both task modes? Open [explore_datasets.ipynb](explore_datasets.ipynb) in Jupyter. It displays two single-phase and two multi-phase examples from MP500, RRUFF, and opXRD, including their XRD patterns and reference structures.
+Want a visual tour of every dataset and both task modes? Open [explore_datasets.ipynb](https://github.com/Asterbin/xrdbench/blob/main/explore_datasets.ipynb) in Jupyter. It displays two single-phase and two multi-phase examples from MP500, RRUFF, and opXRD, including their XRD patterns and reference structures.
 
 ## What it evaluates
 
@@ -34,7 +34,7 @@ xrdbench/
 └── XRDinspector/      # Pinned upstream dependency repository
 ```
 
-Raw source data and generated HDF5 datasets are excluded from Git history. See [datasets/README.md](datasets/README.md) for artifact conventions.
+Raw source data and generated HDF5 datasets are excluded from Git history. See [datasets/README.md](https://github.com/Asterbin/xrdbench/blob/main/datasets/README.md) for artifact conventions.
 
 ## Download datasets
 
