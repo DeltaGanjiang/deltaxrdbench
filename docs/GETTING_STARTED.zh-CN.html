@@ -49,11 +49,11 @@
       <section id="what"><h2>项目是什么</h2>
         <p>XRDBench 是一个面向 X 射线衍射（XRD）结果的可复现评测基准。任何模型都可以接入：传统数据库检索、机器学习模型、LLM agent 或自定义规则程序。模型只需要读取谱图，并写出规定格式的 JSONL 预测文件。</p>
         <table><thead><tr><th>任务</th><th>输入</th><th>真解</th><th>指标</th></tr></thead><tbody>
-          <tr><td>单相识别</td><td>一条 XRD 谱图</td><td>一个规范 phase ID</td><td>Accuracy / exact match</td></tr>
-          <tr><td>多相识别</td><td>一条混合 XRD 谱图</td><td>2–3 个 phase ID 的集合</td><td>Precision、Recall、F1、exact match</td></tr>
+          <tr><td>单相识别</td><td>一条 XRD 谱图</td><td>一个隐藏真解 CIF</td><td>CIF 结构匹配 / exact match</td></tr>
+          <tr><td>多相识别</td><td>一条混合 XRD 谱图</td><td>2–3 个隐藏真解 CIF</td><td>Precision、Recall、F1、exact match</td></tr>
           <tr><td>精修</td><td>实验谱与计算谱</td><td>不要求结构真解</td><td>Rp、Rwp、相关系数、XRDinspector score</td></tr>
         </tbody></table>
-        <p>多相样本最多三个相，且每个相的混合比例均不低于 10%。phase ID 数量就是该样本的晶相数量。</p>
+        <p>多相样本最多三个相，且每个相的混合比例均不低于 10%。内部 phase ID 仅用于数据审计；模型无需知道它。</p>
       </section>
 
       <section id="install"><h2>安装</h2>
@@ -132,7 +132,7 @@ xrdbench-prepare opxrd-json opxrd datasets/opxrd --mixtures 10000 --seed 2026072
 
       <section id="faq"><h2>常见问题</h2>
         <h3>找不到 patterns.h5</h3><p>数据集不在 Git clone 内，请从 <a href="https://github.com/Asterbin/xrdbench/releases">Releases</a> 下载并解压到 <code>datasets/</code>。</p>
-        <h3>为什么用 phase ID，而不是直接比较 CIF？</h3><p>同一结构可因 CIF 排版、origin choice 或 cell setting 不同而文本不同。稳定的 canonical phase ID（例如 <code>MP:mp-123</code>、<code>RRUFF:R120044</code>）可以避免误判。</p>
+        <h3>为什么 CIF 文本不同仍然可以判对？</h3><p>同一结构可因 CIF 排版、origin choice 或 cell setting 不同而文本不同。XRDBench 不直接比较文本：它会解析 CIF，再按晶胞、元素和原子坐标进行结构匹配。内部 phase ID（例如 <code>MP:mp-123</code>）只用于数据审计。</p>
         <h3>最快的跑通方式</h3><ol><li>从 Release 下载一个数据集；</li><li>用“读取一条谱图”代码检查安装；</li><li>生成几个 JSONL 预测；</li><li>运行评测并保存 <code>report.json</code>。</li></ol>
       </section>
     </article>

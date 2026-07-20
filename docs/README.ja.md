@@ -11,8 +11,8 @@
 
 | タスク | 入力 | 正解 | 指標 |
 | --- | --- | --- | --- |
-| 単相同定 | 1 本の XRD パターン | 1 つの正規化された相 ID | Accuracy / 完全一致 |
-| 多相同定 | 混合 XRD パターン | 2–3 相 ID の集合 | Precision、Recall、F1、完全一致 |
+| 単相同定 | 1 本の XRD パターン | 非公開の参照 CIF 1 つ | CIF 構造照合 / 完全一致 |
+| 多相同定 | 混合 XRD パターン | 非公開の参照 CIF 2–3 個 | Precision、Recall、F1、完全一致 |
 | リファインメント | 実験・計算パターン | 構造正解は不要 | Rp、Rwp、相関、XRDinspector score |
 
 多相サンプルは 2 または 3 の異なる相で構成され、各相の割合は 10% 以上です。
@@ -34,6 +34,8 @@ pip install -e ./XRDinspector -e .
 xrdbench dataset.jsonl submissions/model-a.jsonl --output report.json
 ```
 
+モデルは内部相 ID ではなく標準 CIF のパスを JSONL に出力できます。XRDBench は予測 CIF を解析し、非公開の参照構造と照合します。
+
 ## データセットのダウンロード
 
 データセットは GitHub Releases のアセットとして配布され、`git clone` には含まれません。
@@ -47,7 +49,7 @@ xrdbench dataset.jsonl submissions/model-a.jsonl --output report.json
 | ソース | 種類 | 内容 |
 | --- | --- | --- |
 | MP500 | シミュレーション | 10,000 単相 Cu Kα パターンと 30,000 混合パターン（原子数 ≤100） |
-| RRUFF | 実験 | 構造–パターン対と 10,000 混合パターン |
-| opXRD | 実験 | 構造–パターン対と 10,000 混合パターン |
+| RRUFF | 実験 | 使用可能な単相構造–パターン対 1,282 件と 10,000 混合パターン |
+| opXRD | 実験 | 使用可能な単相構造–パターン対 880 件と 10,000 混合パターン |
 
 マニフェストには相ラベル、ソース、パターン位置、混合比率が保存されます。公開版ではソースのスナップショット、乱数シード、前処理設定、SHA-256 も記録してください。

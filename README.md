@@ -14,8 +14,8 @@ New to the project? Start with the [Chinese step-by-step HTML guide](docs/GETTIN
 
 | Track | Input | Ground truth | Metrics |
 | --- | --- | --- | --- |
-| Single-phase identification | One XRD pattern | One canonical phase ID | Accuracy / exact match |
-| Multi-phase identification | One mixed XRD pattern | Set of 2–3 phase IDs | Precision, recall, F1, exact match |
+| Single-phase identification | One XRD pattern | One hidden reference CIF | CIF structure match / exact match |
+| Multi-phase identification | One mixed XRD pattern | Set of 2–3 hidden reference CIFs | Precision, recall, F1, exact match |
 | Refinement | Experimental and calculated patterns | No structural answer required | Rp, Rwp, correlation, XRDinspector score |
 
 Each multi-phase sample contains two or three distinct phases, with every phase fraction at least 10%.
@@ -52,19 +52,23 @@ pip install -e ./XRDinspector -e .
 xrdbench dataset.jsonl submissions/model-a.jsonl --output report.json
 ```
 
-The submission interface is model-agnostic: any model only needs to write JSONL records with the correct `sample_id` and prediction payload.
+The submission interface is model-agnostic: any model writes JSONL records with the correct `sample_id` and one or more predicted CIF paths. XRDBench parses and structurally matches those CIFs to hidden reference structures; models do not need to know database-specific phase IDs.
+
+```json
+{"sample_id":"rruff-single-000000","prediction":{"structure_files":["predictions/result.cif"]}}
+```
 
 ## Dataset sources
 
 | Source | Type | Intended contents |
 | --- | --- | --- |
 | MP500 | Simulated | 10,000 single-phase Cu Kα patterns and 30,000 mixtures, using structures with ≤100 atoms |
-| RRUFF | Experimental | Structure–pattern pairs and 10,000 mixtures |
-| opXRD | Experimental | Structure–pattern pairs and 10,000 mixtures |
+| RRUFF | Experimental | 1,282 usable single-phase structure–pattern pairs and 10,000 mixtures |
+| opXRD | Experimental | 880 usable single-phase structure–pattern pairs and 10,000 mixtures |
 
 ## Reproducibility
 
-Dataset manifests record phase labels, source, pattern location, and mixture fractions. Published releases should additionally record source snapshots, random seeds, preprocessing configuration, and SHA-256 checksums.
+Dataset manifests record source, pattern location, hidden reference CIF paths, internal audit IDs, and mixture fractions. Published releases should additionally record source snapshots, random seeds, preprocessing configuration, and SHA-256 checksums.
 
 ## License
 

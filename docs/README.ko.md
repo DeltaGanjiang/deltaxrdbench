@@ -11,8 +11,8 @@
 
 | 작업 | 입력 | 정답 | 지표 |
 | --- | --- | --- | --- |
-| 단일상 식별 | XRD 패턴 1개 | 표준 상 ID 1개 | Accuracy / 완전 일치 |
-| 다상 식별 | 혼합 XRD 패턴 1개 | 2–3개 상 ID 집합 | Precision, Recall, F1, 완전 일치 |
+| 단일상 식별 | XRD 패턴 1개 | 비공개 기준 CIF 1개 | CIF 구조 매칭 / 완전 일치 |
+| 다상 식별 | 혼합 XRD 패턴 1개 | 비공개 기준 CIF 2–3개 | Precision, Recall, F1, 완전 일치 |
 | 정련 | 실험 및 계산 패턴 | 구조 정답 불필요 | Rp, Rwp, 상관계수, XRDinspector 점수 |
 
 모든 다상 샘플은 서로 다른 2개 또는 3개 상으로 구성되며, 각 상의 비율은 10% 이상입니다.
@@ -34,6 +34,8 @@ pip install -e ./XRDinspector -e .
 xrdbench dataset.jsonl submissions/model-a.jsonl --output report.json
 ```
 
+모델은 내부 상 ID 대신 표준 CIF 경로를 JSONL로 제출할 수 있습니다. XRDBench는 예측 CIF를 해석하여 비공개 기준 구조와 비교합니다.
+
 ## 데이터셋 다운로드
 
 데이터셋은 GitHub Releases 자산으로 배포되며 `git clone`에 포함되지 않습니다.
@@ -47,7 +49,7 @@ xrdbench dataset.jsonl submissions/model-a.jsonl --output report.json
 | 소스 | 유형 | 내용 |
 | --- | --- | --- |
 | MP500 | 시뮬레이션 | 단일상 Cu Kα 패턴 10,000개 및 혼합 패턴 30,000개(원자 수 ≤100) |
-| RRUFF | 실험 | 구조–패턴 쌍 및 혼합 패턴 10,000개 |
-| opXRD | 실험 | 구조–패턴 쌍 및 혼합 패턴 10,000개 |
+| RRUFF | 실험 | 사용 가능한 단일상 구조–패턴 쌍 1,282개 및 혼합 패턴 10,000개 |
+| opXRD | 실험 | 사용 가능한 단일상 구조–패턴 쌍 880개 및 혼합 패턴 10,000개 |
 
 매니페스트에는 상 라벨, 소스, 패턴 위치 및 혼합 비율이 저장됩니다. 공개 데이터 버전에는 소스 스냅샷, 난수 시드, 전처리 설정 및 SHA-256 체크섬도 기록해야 합니다.
