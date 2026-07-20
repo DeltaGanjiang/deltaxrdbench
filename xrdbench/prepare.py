@@ -6,6 +6,8 @@ import argparse
 import ast
 import glob
 import json
+import re
+import warnings
 from pathlib import Path
 from typing import Iterable
 
@@ -13,6 +15,7 @@ import h5py
 import numpy as np
 from ase.db import connect
 from ase.io import write
+from ase.spacegroup import crystal
 
 
 DEFAULT_GRID = (10.0, 80.0, 0.01)
@@ -95,8 +98,13 @@ def _write_dataset(output: Path, source: str, grid: np.ndarray, patterns: np.nda
     output.mkdir(parents=True)
     structures = output / "structures"
     structures.mkdir()
+    from pymatgen.io.ase import AseAtomsAdaptor
+    from pymatgen.io.cif import CifWriter
+
     for phase_id, structure in zip(phase_ids, atoms):
-        write(structures / f"{phase_id.replace(':', '_')}.cif", structure)
+        # Pymatgen-produced CIF files are consumed directly by the evaluator;
+        # ASE's CIF writer can emit occupancy records that pymatgen rejects.
+        CifWriter(AseAtomsAdaptor.get_structure(structure)).write_file(structures / f"{phase_id.replace(':', '_')}.cif")
     mixed, labels, fractions = _mixtures(patterns, phase_ids, mixture_count, np.random.default_rng(seed))
     utf8 = h5py.string_dtype(encoding="utf-8")
     with h5py.File(output / "patterns.h5", "w") as handle:
@@ -138,6 +146,92 @@ def build_rruff(database: str | Path, output: str | Path, *, mixtures: int = 10_
         atoms_list.append(atoms)
     if not patterns:
         raise ValueError("no usable RRUFF structure-pattern pairs found")
+    _write_dataset(Path(output), "rruff", grid, np.stack(patterns), labels, atoms_list, mixtures, seed)
+
+
+def _rruff_key(path: Path) -> str:
+    """Return the shared sample key in RRUFF DIF and XY_RAW filenames."""
+    return path.name.split("__Powder__", 1)[0]
+
+
+def _rruff_atoms_from_dif(filename: Path):
+    """Parse a RRUFF DIF crystal label into an ASE structure.
+
+    DIF files that only contain a calculated peak list intentionally return
+    ``None``: they do not provide a usable crystal-structure label.
+    """
+    text = filename.read_text(encoding="utf-8", errors="replace")
+    cell_match = re.search(
+        r"CELL PARAMETERS:\s*([0-9.]+)\s+([0-9.]+)\s+([0-9.]+)\s+([0-9.]+)\s+([0-9.]+)\s+([0-9.]+)",
+        text,
+    )
+    group_match = re.search(r"(?:SPACE GROUP|ALTERNATE SETTING FOR SPACE GROUP):\s*([^\r\n]+)", text)
+    atom_rows = re.findall(
+        r"^\s*([A-Z][a-z]?)\S*\s+(-?[0-9.]+)\s+(-?[0-9.]+)\s+(-?[0-9.]+)\s+([0-9.]+)",
+        text,
+        flags=re.MULTILINE,
+    )
+    if not cell_match or not group_match or not atom_rows:
+        return None
+    cellpar = [float(value) for value in cell_match.groups()]
+    symbols = [row[0] for row in atom_rows]
+    basis = [[float(value) for value in row[1:4]] for row in atom_rows]
+    occupancies = [float(row[4]) for row in atom_rows]
+    spacegroup = group_match.group(1).strip().split()[0].replace("_", "")
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", UserWarning)
+            return crystal(symbols, basis=basis, spacegroup=spacegroup, cellpar=cellpar, occupancies=occupancies)
+    except Exception:  # RRUFF includes non-standard Hermann--Mauguin settings.
+        return None
+
+
+def _rruff_xy_pattern(filename: Path, grid: np.ndarray) -> np.ndarray:
+    points: list[tuple[float, float]] = []
+    for line in filename.read_text(encoding="utf-8", errors="replace").splitlines():
+        fields = re.split(r"[\s,]+", line.strip())
+        if len(fields) < 2:
+            continue
+        try:
+            points.append((float(fields[0]), float(fields[1])))
+        except ValueError:
+            continue
+    if len(points) < 3:
+        raise ValueError("pattern has fewer than three numeric points")
+    angle, intensity = zip(*points)
+    return _interpolate(angle, intensity, grid)
+
+
+def build_rruff_directory(source_directory: str | Path, output: str | Path, *, mixtures: int = 10_000, seed: int = 0, grid_spec: tuple[float, float, float] = DEFAULT_GRID) -> None:
+    """Build RRUFF from the raw DIF/XY_RAW release directory.
+
+    Only XY_RAW spectra with a matching DIF file that contains a complete
+    crystal label (cell, space group, and atom positions) are retained.
+    """
+    source = Path(source_directory)
+    grid = _grid(*grid_spec)
+    dif_files = {_rruff_key(path): path for path in (source / "DIF").glob("*.txt")}
+    patterns: list[np.ndarray] = []
+    labels: list[str] = []
+    atoms_list: list = []
+    for xy_file in sorted((source / "XY_RAW").glob("*.txt")):
+        key = _rruff_key(xy_file)
+        dif_file = dif_files.get(key)
+        if dif_file is None:
+            continue
+        try:
+            atoms = _rruff_atoms_from_dif(dif_file)
+            if atoms is None or len(atoms) == 0:
+                continue
+            pattern = _rruff_xy_pattern(xy_file, grid)
+        except (OSError, TypeError, ValueError, np.linalg.LinAlgError):
+            continue
+        rruff_id = key.split("__")[-1]
+        labels.append(f"RRUFF:{rruff_id}")
+        patterns.append(pattern)
+        atoms_list.append(atoms)
+    if not patterns:
+        raise ValueError("no usable RRUFF XY_RAW spectra with crystal labels found")
     _write_dataset(Path(output), "rruff", grid, np.stack(patterns), labels, atoms_list, mixtures, seed)
 
 
@@ -286,6 +380,14 @@ def main() -> None:
     rruff.add_argument("--grid-start", type=float, default=DEFAULT_GRID[0])
     rruff.add_argument("--grid-stop", type=float, default=DEFAULT_GRID[1])
     rruff.add_argument("--grid-step", type=float, default=DEFAULT_GRID[2])
+    rruff_raw = command.add_parser("rruff-raw", help="Build RRUFF from raw DIF and XY_RAW directories")
+    rruff_raw.add_argument("directory")
+    rruff_raw.add_argument("output")
+    rruff_raw.add_argument("--mixtures", type=int, default=10_000)
+    rruff_raw.add_argument("--seed", type=int, default=0)
+    rruff_raw.add_argument("--grid-start", type=float, default=DEFAULT_GRID[0])
+    rruff_raw.add_argument("--grid-stop", type=float, default=DEFAULT_GRID[1])
+    rruff_raw.add_argument("--grid-step", type=float, default=DEFAULT_GRID[2])
     mp500 = command.add_parser("mp500", help="Build simulated MP500 patterns and mixtures")
     mp500.add_argument("database")
     mp500.add_argument("output")
@@ -318,6 +420,8 @@ def main() -> None:
     grid_spec = (args.grid_start, args.grid_stop, args.grid_step)
     if args.source == "rruff":
         build_rruff(args.database, args.output, mixtures=args.mixtures, seed=args.seed, grid_spec=grid_spec)
+    elif args.source == "rruff-raw":
+        build_rruff_directory(args.directory, args.output, mixtures=args.mixtures, seed=args.seed, grid_spec=grid_spec)
     elif args.source == "mp500":
         build_mp500(args.database, args.output, single_count=args.single_count, mixtures=args.mixtures, seed=args.seed, grid_spec=grid_spec)
     elif args.source == "opxrd":

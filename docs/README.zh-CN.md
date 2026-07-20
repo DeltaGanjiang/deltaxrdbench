@@ -64,7 +64,7 @@ See [submission.jsonl examples](../domo/README.zh-CN.md) for CIF paths, pymatgen
 | Source | Type | Contents |
 | --- | --- | --- |
 | MP500 | Simulated | 10,000 single-phase Cu K-alpha patterns and 30,000 mixtures; structures contain no more than 100 atoms |
-| RRUFF | Experimental | 1,282 usable single-phase structure-pattern pairs and 10,000 mixtures |
+| RRUFF | Experimental | 1,164 usable single-phase structure-pattern pairs and 10,000 mixtures |
 | opXRD | Experimental | 880 usable single-phase structure-pattern pairs and 10,000 mixtures |
 
 Each dataset package contains `patterns.h5`, `manifest.jsonl`, and `structures/`. The common XRD grid is 10–80 degrees 2-theta with a 0.01-degree step, resulting in 7,001 intensity values per pattern.

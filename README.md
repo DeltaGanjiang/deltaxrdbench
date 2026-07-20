@@ -65,7 +65,7 @@ The submission interface is model-agnostic: any model writes JSONL records with 
 | Source | Type | Intended contents |
 | --- | --- | --- |
 | MP500 | Simulated | 10,000 single-phase Cu Kα patterns and 30,000 mixtures, using structures with ≤100 atoms |
-| RRUFF | Experimental | 1,282 usable single-phase structure–pattern pairs and 10,000 mixtures |
+| RRUFF | Experimental | 1,164 usable single-phase structure–pattern pairs and 10,000 mixtures |
 | opXRD | Experimental | 880 usable single-phase structure–pattern pairs and 10,000 mixtures |
 
 ## Reproducibility
