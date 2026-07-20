@@ -6,7 +6,7 @@
 
 **A reproducible benchmark for X-ray diffraction phase identification and refinement.**
 
-[English](README.md) · [简体中文](docs/README.zh-CN.md) · [日本語](docs/README.ja.md) · [한국어](docs/README.ko.md)
+[English](README.md) · [Overview](docs/README.zh-CN.md) · [Japanese](docs/README.ja.md) · [Korean](docs/README.ko.md)
 
 New to the project? Start with the [Chinese step-by-step HTML guide](docs/GETTING_STARTED.zh-CN.html).
 
