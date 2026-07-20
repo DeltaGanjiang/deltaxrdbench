@@ -8,7 +8,7 @@
 
 [English](https://github.com/Asterbin/xrdbench/blob/main/README.md) · [Overview](https://github.com/Asterbin/xrdbench/blob/main/docs/README.zh-CN.md) · [Japanese](https://github.com/Asterbin/xrdbench/blob/main/docs/README.ja.md) · [Korean](https://github.com/Asterbin/xrdbench/blob/main/docs/README.ko.md)
 
-New to the project? Start with the [bilingual step-by-step HTML guide](https://github.com/Asterbin/xrdbench/blob/main/docs/GETTING_STARTED.zh-CN.html).
+New to the project? Start with the [bilingual step-by-step HTML guide](https://asterbin.github.io/xrdbench/), automatically published through GitHub Pages.
 
 Need to write a model output? See the [submission.jsonl examples](https://github.com/Asterbin/xrdbench/blob/main/domo/README.md).
 
