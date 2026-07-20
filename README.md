@@ -10,6 +10,8 @@
 
 New to the project? Start with the [Chinese step-by-step HTML guide](docs/GETTING_STARTED.zh-CN.html).
 
+Need to write a model output? See the [submission.jsonl examples](domo/README.zh-CN.md).
+
 ## What it evaluates
 
 | Track | Input | Ground truth | Metrics |
