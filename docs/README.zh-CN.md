@@ -7,7 +7,7 @@
 
 [English](../README.md) · [Overview](README.zh-CN.md) · [Japanese](README.ja.md) · [Korean](README.ko.md)
 
-For a browser-friendly walkthrough, open the [HTML getting-started guide](GETTING_STARTED.zh-CN.html).
+For a browser-friendly bilingual walkthrough with one-click Chinese/English switching, open the [HTML getting-started guide](GETTING_STARTED.zh-CN.html).
 
 ## Evaluation tracks
 

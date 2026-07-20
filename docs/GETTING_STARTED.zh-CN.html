@@ -1,142 +1,94 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en" data-lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="XRDBench 中文新手使用说明">
-  <title>XRDBench 新手使用说明</title>
+  <meta name="description" content="XRDBench bilingual getting-started guide">
+  <title>XRDBench · Getting Started</title>
   <style>
-    :root { color-scheme: light dark; --bg:#f8fafc; --paper:#fff; --text:#172033; --muted:#5d6778; --line:#dce3ed; --accent:#2563eb; --code:#0f172a; }
-    * { box-sizing:border-box; }
-    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif; }
-    header { background:linear-gradient(135deg,#0f2a5c,#2563eb); color:#fff; padding:56px 24px 46px; }
-    header > div, main { max-width:1080px; margin:auto; }
-    h1 { font-size:clamp(2rem,5vw,3.4rem); margin:0 0 8px; letter-spacing:-.04em; }
-    h2 { margin:48px 0 14px; font-size:1.65rem; scroll-margin-top:24px; }
-    h3 { margin:26px 0 8px; font-size:1.15rem; }
-    p { margin:10px 0; } a { color:var(--accent); } header a { color:#dbeafe; }
-    .language, .badges { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
-    .language a, .badge { border:1px solid rgba(255,255,255,.35); border-radius:999px; padding:4px 12px; text-decoration:none; font-size:.88rem; }
-    main { display:grid; grid-template-columns:230px minmax(0,1fr); gap:36px; padding:34px 24px 72px; }
-    nav { position:sticky; top:18px; height:max-content; border-left:2px solid var(--line); padding-left:14px; }
-    nav a { display:block; font-size:.9rem; line-height:1.45; margin:8px 0; text-decoration:none; color:var(--muted); }
-    article { background:var(--paper); border:1px solid var(--line); border-radius:16px; padding:20px 38px 44px; box-shadow:0 8px 28px rgba(15,23,42,.05); }
-    table { width:100%; border-collapse:collapse; margin:14px 0; font-size:.94rem; }
-    th,td { padding:10px 12px; text-align:left; vertical-align:top; border:1px solid var(--line); }
-    th { background:#eff6ff; } code { font-family:"SFMono-Regular",Consolas,monospace; font-size:.88em; }
-    pre { overflow:auto; padding:15px 17px; border-radius:10px; background:var(--code); color:#e2e8f0; line-height:1.55; }
-    .note { border-left:4px solid #f59e0b; background:#fffbeb; padding:13px 16px; border-radius:0 8px 8px 0; }
-    .download { display:inline-block; background:#16a34a; color:#fff; border-radius:8px; padding:10px 16px; text-decoration:none; font-weight:650; margin:8px 0; }
-    ol,ul { padding-left:1.35rem; } li { margin:5px 0; }
-    footer { text-align:center; padding:24px; color:var(--muted); font-size:.9rem; }
-    @media (max-width:800px) { main { display:block; padding:20px 13px 44px; } nav { display:none; } article { padding:12px 20px 30px; border-radius:10px; } header { padding:40px 20px; } }
-    @media (prefers-color-scheme:dark) { :root { --bg:#0b1220; --paper:#111b2e; --text:#e7edf8; --muted:#b7c0cf; --line:#2b3a53; --accent:#93c5fd; --code:#070d19; } th { background:#172a4c; } .note { background:#3d300c; } }
+    :root{--ink:#15213a;--muted:#5f6e85;--blue:#2563eb;--sky:#eff6ff;--line:#dce5f0;--paper:#fff;--ground:#f6f9fd;--code:#101827;--green:#15803d;--amber:#b45309}
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--ground);color:var(--ink);font:16px/1.72 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
+    .hero{position:relative;overflow:hidden;background:radial-gradient(circle at 18% 0%,#3b82f6 0,#1d4ed8 35%,#102a5b 100%);color:#fff;padding:64px 24px 54px}.hero::before{content:"";position:absolute;inset:0;opacity:.14;background-image:linear-gradient(#fff2 1px,transparent 1px),linear-gradient(90deg,#fff2 1px,transparent 1px);background-size:30px 30px;mask-image:linear-gradient(90deg,#000,transparent 82%)}.hero::after{content:"◇ ◇ ◇";position:absolute;right:6%;bottom:19px;letter-spacing:18px;color:#93c5fd;font-size:1.45rem;animation:drift 7s ease-in-out infinite}.hero-inner,.shell{max-width:1160px;margin:auto}.hero-inner{position:relative;z-index:1}.eyebrow{font-size:.78rem;letter-spacing:.13em;text-transform:uppercase;color:#bfdbfe;font-weight:750}.hero h1{font-size:clamp(2.3rem,5vw,4rem);letter-spacing:-.055em;margin:9px 0 12px;line-height:1.05}.hero p{max-width:710px;font-size:1.1rem;color:#dbeafe;margin:0}.topline{display:flex;justify-content:space-between;align-items:center;gap:16px}.repo{color:#dbeafe;text-decoration:none;font-size:.9rem}.switch{display:inline-flex;background:#ffffff22;border:1px solid #ffffff38;padding:4px;border-radius:999px;gap:3px}.switch button{border:0;background:transparent;color:#dbeafe;border-radius:999px;padding:7px 14px;font:inherit;cursor:pointer}.switch button.active{background:#fff;color:#1e3a8a;font-weight:700}
+    .quick{display:flex;flex-wrap:wrap;gap:10px;margin-top:27px}.quick a{color:white;text-decoration:none;border:1px solid #ffffff54;border-radius:9px;padding:8px 12px;font-size:.91rem}.quick a:hover{background:#ffffff18}
+    .shell{display:grid;grid-template-columns:235px minmax(0,1fr);gap:42px;padding:34px 24px 76px}.toc{position:sticky;top:18px;height:max-content;border-left:2px solid var(--line);padding:4px 0 4px 15px}.toc h2{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}.toc a{display:block;color:var(--muted);text-decoration:none;font-size:.91rem;line-height:1.4;padding:6px 0}.toc a:hover{color:var(--blue)}
+    article{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:24px 44px 54px;box-shadow:0 12px 32px #20304a0b}section{scroll-margin-top:18px}h2{font-size:1.72rem;letter-spacing:-.028em;margin:48px 0 14px}h2:first-child{margin-top:8px}h3{font-size:1.12rem;margin:25px 0 7px}p{margin:9px 0}a{color:var(--blue)}.lead{font-size:1.08rem;color:#34435b}.callout{border-left:4px solid var(--blue);border-radius:0 9px 9px 0;background:var(--sky);padding:13px 16px;margin:18px 0}.warn{border-left-color:#f59e0b;background:#fffbeb}.download{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff!important;text-decoration:none;border-radius:9px;font-weight:700;padding:10px 15px;margin:10px 0}.download::before{content:"↓";font-size:1.2rem}table{width:100%;border-collapse:collapse;margin:15px 0;font-size:.92rem}th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}th{background:#f1f6fc;font-weight:700}pre{overflow:auto;background:var(--code);color:#e5edf9;border-radius:11px;padding:16px 18px;line-height:1.55;font-size:.86rem}code{font-family:"SFMono-Regular",Consolas,monospace;font-size:.88em}.steps{counter-reset:step;list-style:none;padding:0;margin:14px 0}.steps li{position:relative;padding:0 0 17px 47px}.steps li::before{counter-increment:step;content:counter(step);position:absolute;left:0;top:1px;width:29px;height:29px;border-radius:50%;display:grid;place-items:center;background:#dbeafe;color:#1d4ed8;font-size:.86rem;font-weight:800}.steps li:not(:last-child)::after{content:"";position:absolute;left:14px;top:34px;width:1px;height:calc(100% - 24px);background:#cbd5e1}.tag{display:inline-block;padding:2px 8px;border-radius:999px;background:#e0e7ff;color:#3730a3;font-size:.8rem;font-weight:700}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}.flow div{padding:13px;border:1px solid var(--line);border-radius:11px;background:linear-gradient(145deg,#fff,#f6f9fd);font-size:.88rem}.flow svg{width:24px;height:24px;display:block;margin-bottom:7px;color:var(--blue)}.reveal{opacity:0;transform:translateY(12px);transition:opacity .55s ease,transform .55s ease}.reveal.visible{opacity:1;transform:none}@keyframes drift{50%{transform:translateY(-8px) rotate(5deg)}}html[data-lang="en"] .lang-zh,html[data-lang="zh"] .lang-en{display:none!important}footer{text-align:center;color:var(--muted);padding:0 24px 30px;font-size:.9rem}
+    @media(max-width:820px){.hero{padding:36px 20px 40px}.shell{display:block;padding:18px 12px 48px}.toc{display:none}article{padding:15px 20px 35px;border-radius:12px}.topline{align-items:flex-start}.repo{display:none}table{font-size:.83rem}.hero h1{font-size:2.35rem}.flow{grid-template-columns:repeat(2,1fr)}}
+    @media(prefers-color-scheme:dark){:root{--ink:#e7edf8;--muted:#a9b6c9;--blue:#93c5fd;--sky:#152541;--line:#2d405e;--paper:#101a2d;--ground:#09111f;--code:#070d18;--green:#4ade80}.toc a{color:var(--muted)}th{background:#172846}.warn{background:#382908}.switch button.active{color:#102a5b}}
   </style>
 </head>
 <body>
-  <header><div>
-    <h1>XRDBench 新手使用说明</h1>
-    <p>从下载 XRD 数据到提交模型结果的完整上手流程。</p>
-    <div class="language">
-      <a href="../README.md">English</a><a href="README.zh-CN.md">中文简介</a><a href="GETTING_STARTED.zh-CN.md">Markdown 版</a><a href="README.ja.md">日本語</a><a href="README.ko.md">한국어</a>
-    </div>
+  <header class="hero"><div class="hero-inner">
+    <div class="topline"><span class="eyebrow">Open XRD Benchmark</span><a class="repo" href="https://github.com/Asterbin/xrdbench">github.com/Asterbin/xrdbench ↗</a><div class="switch" aria-label="Language"><button id="zh" onclick="setLanguage('zh')">中文</button><button id="en" class="active" onclick="setLanguage('en')">English</button></div></div>
+    <h1 class="lang-zh">XRDBench 新手手册</h1><h1 class="lang-en">XRDBench Getting Started</h1>
+    <p class="lang-zh">从下载数据、读取 XRD，到让模型输出 CIF 并获得统一评测结果。</p><p class="lang-en">From dataset download and XRD loading to CIF submission and reproducible evaluation.</p>
+    <div class="quick"><a href="https://github.com/Asterbin/xrdbench/releases">GitHub Releases</a><a href="../domo/README.zh-CN.md">submission.jsonl examples</a><a href="../README.md">Project README</a></div>
   </div></header>
-  <main>
-    <nav aria-label="目录">
-      <a href="#what">项目是什么</a><a href="#install">安装</a><a href="#data">下载数据</a><a href="#read">读取谱图</a><a href="#submit">提交模型结果</a><a href="#evaluate">运行评测</a><a href="#refine">精修评测</a><a href="#build">重建数据</a><a href="#faq">常见问题</a>
-    </nav>
-    <article>
-      <section id="what"><h2>项目是什么</h2>
-        <p>XRDBench 是一个面向 X 射线衍射（XRD）结果的可复现评测基准。任何模型都可以接入：传统数据库检索、机器学习模型、LLM agent 或自定义规则程序。模型只需要读取谱图，并写出规定格式的 JSONL 预测文件。</p>
-        <table><thead><tr><th>任务</th><th>输入</th><th>真解</th><th>指标</th></tr></thead><tbody>
-          <tr><td>单相识别</td><td>一条 XRD 谱图</td><td>一个隐藏真解 CIF</td><td>CIF 结构匹配 / exact match</td></tr>
-          <tr><td>多相识别</td><td>一条混合 XRD 谱图</td><td>2–3 个隐藏真解 CIF</td><td>Precision、Recall、F1、exact match</td></tr>
-          <tr><td>精修</td><td>实验谱与计算谱</td><td>不要求结构真解</td><td>Rp、Rwp、相关系数、XRDinspector score</td></tr>
-        </tbody></table>
-        <p>多相样本最多三个相，且每个相的混合比例均不低于 10%。内部 phase ID 仅用于数据审计；模型无需知道它。</p>
-      </section>
-
-      <section id="install"><h2>安装</h2>
-        <h3>获取项目</h3>
-        <pre><code>git clone --recurse-submodules https://github.com/Asterbin/xrdbench.git
-cd xrdbench</code></pre>
-        <p>如果忘记使用 <code>--recurse-submodules</code>，补运行：</p>
-        <pre><code>git submodule update --init --recursive</code></pre>
-        <h3>创建环境</h3>
-        <pre><code>conda create -n xrdbench python=3.11 -y
+  <main class="shell"><nav class="toc"><h2 class="lang-zh">目录</h2><h2 class="lang-en">Contents</h2><a href="#overview"><span class="lang-zh">项目是什么</span><span class="lang-en">Overview</span></a><a href="#install"><span class="lang-zh">安装</span><span class="lang-en">Installation</span></a><a href="#datasets"><span class="lang-zh">数据集与下载</span><span class="lang-en">Datasets & download</span></a><a href="#read"><span class="lang-zh">读取数据</span><span class="lang-en">Read the data</span></a><a href="#cif"><span class="lang-zh">输出 CIF</span><span class="lang-en">Output CIF</span></a><a href="#submit"><span class="lang-zh">提交与评测</span><span class="lang-en">Submit & evaluate</span></a><a href="#results"><span class="lang-zh">理解报告</span><span class="lang-en">Read the report</span></a><a href="#refinement"><span class="lang-zh">精修评测</span><span class="lang-en">Refinement</span></a><a href="#faq"><span class="lang-zh">常见问题</span><span class="lang-en">FAQ</span></a></nav>
+  <article>
+    <section id="overview"><h2 class="lang-zh">项目是什么</h2><h2 class="lang-en">What is XRDBench?</h2>
+      <p class="lead lang-zh">XRDBench 是一个模型无关的 XRD 结果评测基准。传统检索软件、深度学习模型和 agent 都可以接入：它们读入谱图，输出晶体结构 CIF，XRDBench 完成结构核对与打分。</p><p class="lead lang-en">XRDBench is a model-agnostic benchmark for XRD results. Search software, deep-learning models, and agents can all participate: they read patterns, output crystal CIFs, and XRDBench validates and scores the results.</p>
+      <table><thead><tr><th><span class="lang-zh">任务</span><span class="lang-en">Track</span></th><th><span class="lang-zh">模型输入</span><span class="lang-en">Model input</span></th><th><span class="lang-zh">模型输出</span><span class="lang-en">Model output</span></th><th><span class="lang-zh">指标</span><span class="lang-en">Metrics</span></th></tr></thead><tbody><tr><td><span class="lang-zh">单相识别</span><span class="lang-en">Single phase</span></td><td><span class="lang-zh">一条 XRD</span><span class="lang-en">One XRD pattern</span></td><td><span class="lang-zh">一个 CIF</span><span class="lang-en">One CIF</span></td><td>CIF match / exact match</td></tr><tr><td><span class="lang-zh">多相识别</span><span class="lang-en">Multi phase</span></td><td><span class="lang-zh">一条混合 XRD</span><span class="lang-en">One mixed XRD pattern</span></td><td><span class="lang-zh">2–3 个 CIF</span><span class="lang-en">2–3 CIFs</span></td><td>Precision / Recall / F1</td></tr><tr><td><span class="lang-zh">精修</span><span class="lang-en">Refinement</span></td><td><span class="lang-zh">实验谱</span><span class="lang-en">Experimental pattern</span></td><td><span class="lang-zh">计算谱</span><span class="lang-en">Calculated pattern</span></td><td>Rp / Rwp / correlation</td></tr></tbody></table>
+      <div class="callout lang-zh"><strong>核心原则：</strong>模型不需要知道 RRUFF 或 MP 的内部 ID。评测器比较解析后的晶体结构，不是比较 CIF 文本或文件名。</div><div class="callout lang-en"><strong>Key principle:</strong> models do not need RRUFF or MP internal IDs. The evaluator compares parsed crystal structures, not CIF text or filenames.</div>
+      <div class="flow"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4zM7 15l3-3 2 2 3-4 2 3"/></svg><span class="lang-zh">读取 XRD 谱图</span><span class="lang-en">Read XRD patterns</span></div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4M5 5l3 3m8 8 3 3m0-14-3 3M8 16l-3 3"/></svg><span class="lang-zh">模型预测结构</span><span class="lang-en">Predict structures</span></div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 3h10l4 4v14H5zM9 12h6m-6 4h6M9 8h2"/></svg><span class="lang-zh">输出 CIF + JSONL</span><span class="lang-en">Write CIF + JSONL</span></div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5m0 14h16M7 15l3-4 3 2 4-6"/></svg><span class="lang-zh">结构匹配与报告</span><span class="lang-en">Match and report</span></div></div>
+    </section>
+    <section id="install"><h2 class="lang-zh">安装</h2><h2 class="lang-en">Installation</h2><ol class="steps"><li><span class="lang-zh">克隆项目和 XRDinspector 子模块。</span><span class="lang-en">Clone the project and the XRDinspector submodule.</span><pre><code>git clone --recurse-submodules https://github.com/Asterbin/xrdbench.git
+cd xrdbench</code></pre></li><li><span class="lang-zh">创建 Python 3.9+ 环境并安装。</span><span class="lang-en">Create a Python 3.9+ environment and install the packages.</span><pre><code>conda create -n xrdbench python=3.11 -y
 conda activate xrdbench
-pip install -e ./XRDinspector -e .
-xrdbench --help
-xrdbench-prepare --help</code></pre>
-        <p>命令不在 PATH 时可使用 <code>python -m xrdbench.cli --help</code> 和 <code>python -m xrdbench.prepare --help</code>。</p>
-      </section>
-
-      <section id="data"><h2>下载数据集</h2>
-        <p>大型 HDF5 数据不会随 <code>git clone</code> 提供。请从 GitHub Releases 下载后解压到 <code>datasets/</code>。</p>
-        <a class="download" href="https://github.com/Asterbin/xrdbench/releases">前往 GitHub Releases 下载数据集</a>
-        <pre><code>datasets/
-├── mp500/   # 模拟：10,000 单相 + 30,000 多相
-├── rruff/   # 实验：结构–谱图对 + 10,000 多相
-└── opxrd/   # 实验：结构–谱图对 + 10,000 多相</code></pre>
-        <p>每个目录均包含 <code>patterns.h5</code>、<code>manifest.jsonl</code> 和 <code>structures/</code>。请记录所用 Release 版本和校验和，保证训练与评测可复现。</p>
-        <table><thead><tr><th>数据集</th><th>单相数量</th><th>多相数量</th><th>说明</th></tr></thead><tbody><tr><td>MP500</td><td>10,000</td><td>30,000</td><td>Cu Kα 模拟谱；结构原子数不超过 100</td></tr><tr><td>RRUFF</td><td>1,282</td><td>10,000</td><td>可恢复晶体结构的实验结构–谱图对</td></tr><tr><td>opXRD</td><td>880</td><td>10,000</td><td>可解析单相晶体结构的实验谱图</td></tr></tbody></table>
-      </section>
-
-      <section id="read"><h2>读取一条谱图</h2>
-        <p>所有谱图统一到 10–80° 2θ、0.01° 步长，共 7,001 个点。<code>patterns.h5</code> 保存数值，<code>manifest.jsonl</code> 将样本 ID 映射到 HDF5 行和标签。</p>
-        <pre><code>import json
+pip install -e ./XRDinspector -e .</code></pre></li><li><span class="lang-zh">检查命令。</span><span class="lang-en">Verify the commands.</span><pre><code>xrdbench --help
+xrdbench-prepare --help</code></pre></li></ol></section>
+    <section id="datasets"><h2 class="lang-zh">数据集与下载</h2><h2 class="lang-en">Datasets and download</h2><p class="lang-zh">数据包不包含在 Git clone 中。请从 Releases 下载并解压到 <code>datasets/</code>。</p><p class="lang-en">Dataset archives are not part of a Git clone. Download them from Releases and extract them into <code>datasets/</code>.</p><a class="download" href="https://github.com/Asterbin/xrdbench/releases"><span class="lang-zh">从 GitHub Releases 下载</span><span class="lang-en">Download from GitHub Releases</span></a><table><thead><tr><th>Source</th><th class="lang-zh">单相</th><th class="lang-en">Singles</th><th class="lang-zh">多相</th><th class="lang-en">Mixtures</th><th class="lang-zh">说明</th><th class="lang-en">Notes</th></tr></thead><tbody><tr><td>MP500</td><td colspan="2">10,000</td><td colspan="2">30,000</td><td class="lang-zh">Cu Kα 模拟；原子数 ≤100</td><td class="lang-en">Cu Kα simulation; ≤100 atoms</td></tr><tr><td>RRUFF</td><td colspan="2">1,282</td><td colspan="2">10,000</td><td class="lang-zh">实验结构–谱图对</td><td class="lang-en">Experimental structure-pattern pairs</td></tr><tr><td>opXRD</td><td colspan="2">880</td><td colspan="2">10,000</td><td class="lang-zh">实验结构–谱图对</td><td class="lang-en">Experimental structure-pattern pairs</td></tr></tbody></table><p class="lang-zh">所有多相样本均由 2–3 个不同相混合，每个相至少占 10%。</p><p class="lang-en">Every mixture contains two or three distinct phases, each at a fraction of at least 10%.</p><pre><code>datasets/
+├── mp500/  ─┬─ patterns.h5      # intensity arrays
+│            ├─ manifest.jsonl   # labels and locations
+│            └─ structures/      # hidden reference CIFs
+├── rruff/
+└── opxrd/</code></pre></section>
+    <section id="read"><h2 class="lang-zh">读取 XRD 数据</h2><h2 class="lang-en">Read XRD data</h2><p class="lang-zh">谱图统一为 10–80° 2θ、0.01° 步长、7,001 个点；强度经过基线处理和面积归一化。</p><p class="lang-en">Patterns share a 10–80° 2θ grid at 0.01° spacing (7,001 points), with baseline treatment and area normalization.</p><pre><code>import json
 from pathlib import Path
 import h5py
 
 root = Path("datasets/rruff")
 record = json.loads((root / "manifest.jsonl").read_text().splitlines()[0])
-
 with h5py.File(root / record["input"]["archive"], "r") as h5:
     two_theta = h5["two_theta_deg"][:]
     intensity = h5[record["input"]["dataset"]][record["input"]["index"]]
+print(record["sample_id"], two_theta.shape, intensity.shape)</code></pre><div class="callout warn lang-zh"><strong>注意：</strong>训练集可包含标签；隐藏测试集不能将 <code>ground_truth</code> 或真解 CIF 交给模型。</div><div class="callout warn lang-en"><strong>Important:</strong> labels may be available for training. Never expose <code>ground_truth</code> or reference CIFs from a hidden test set to a model.</div></section>
+    <section id="cif"><h2 class="lang-zh">让模型输出 CIF</h2><h2 class="lang-en">Make your model output CIF</h2><p class="lang-zh">标准 CIF 应为 UTF-8 文本，包含晶胞长度/角度、元素种类和原子分数坐标。模型可直接写文件、返回 CIF 文本，或返回 pymatgen <code>Structure</code> 后导出。</p><p class="lang-en">A standard CIF is UTF-8 text containing cell lengths/angles, species, and fractional atomic coordinates. A model may write a file directly, return CIF text, or export a pymatgen <code>Structure</code>.</p><pre><code>from pymatgen.io.cif import CifWriter
 
-print(record["sample_id"], record["task"])
-print(two_theta.shape, intensity.shape)  # (7001,), (7001,)</code></pre>
-        <div class="note"><strong>重要：</strong>测试集的 <code>ground_truth</code> 只能由评测端保存，不能提供给模型。公开给模型时只提供谱图、sample ID 和允许使用的元数据。</div>
-      </section>
-
-      <section id="submit"><h2>提交模型结果</h2>
-        <p>预测文件为 UTF-8 JSONL：每行一个样本，且 <code>sample_id</code> 必须对应数据集。推荐提交模型生成的标准 CIF 文件，而不是猜测内部 RRUFF 或 MP ID。</p>
-        <pre><code>{"sample_id":"rruff-single-000000","prediction":{"structure_files":["predictions/one.cif"]}}
-{"sample_id":"rruff-multi-000000","prediction":{"structure_files":["predictions/a.cif","predictions/b.cif"]}}</code></pre>
-        <p>单相必须提交一个 CIF，多相提交 2–3 个 CIF。CIF 应为 UTF-8、包含晶胞参数、元素和分数坐标的标准晶体文件。评测器会解析预测 CIF 和隐藏真解 CIF，并按晶胞、元素和原子坐标进行一对一结构匹配；文件名、文本排版和内部 phase ID 不影响结果。</p>
-        <p>如果模型已经知道数据库 ID，也可以使用兼容接口：</p>
-        <pre><code>{"sample_id":"rruff-single-000000","prediction":{"phase_ids":["RRUFF:R120044"]}}
-{"sample_id":"rruff-multi-000000","prediction":{"phase_ids":["RRUFF:R120044","RRUFF:R040120"]}}</code></pre>
-        <p>多报相会降低 precision，漏相会降低 recall，只有完整集合一致才算 exact match。漏交样本会记为 <code>missing_prediction</code> 并按零分进入汇总。</p>
-      </section>
-
-      <section id="evaluate"><h2>运行识别评测</h2>
-        <pre><code>xrdbench path/to/evaluation-dataset.jsonl submission.jsonl --output report.json</code></pre>
-        <p><code>report.json</code> 的 <code>summary</code> 用于比较模型；<code>samples</code> 是逐样本诊断结果。</p>
-        <ul><li><code>coverage</code>：实际完成预测的样本比例。</li><li><code>exact_match_rate</code>：预测相集合与真解完全相同的比例。</li><li><code>macro_f1</code>：逐样本 F1 的平均值。</li></ul>
-      </section>
-
-      <section id="refine"><h2>精修评测</h2>
-        <p>精修输入为实验谱和计算谱，两者均是两列文本：<code>two_theta_deg intensity</code>。</p>
-        <pre><code>xrdinspector refine experimental.xy calculated.xy</code></pre>
-        <p>输出的 <code>Rp</code>、<code>Rwp</code> 越低越好，<code>correlation</code> 越接近 1 越好。<code>score</code> 是 0–100 的连续质量分数。它衡量谱图一致性，不单独证明结构的物理正确性。</p>
-      </section>
-
-      <section id="build"><h2>自己重建数据（高级）</h2>
-        <pre><code>xrdbench-prepare rruff RRUFF.db datasets/rruff --mixtures 10000 --seed 20260720
-xrdbench-prepare mp500 MP500.db datasets/mp500 --single-count 10000 --mixtures 30000 --seed 20260720
-xrdbench-prepare opxrd-json opxrd datasets/opxrd --mixtures 10000 --seed 20260720</code></pre>
-        <p>固定 <code>--seed</code> 可以复现实验。生成的大型数据请通过 GitHub Releases、对象存储或 DOI 归档发布，而不是直接提交到 Git。</p>
-      </section>
-
-      <section id="faq"><h2>常见问题</h2>
-        <h3>找不到 patterns.h5</h3><p>数据集不在 Git clone 内，请从 <a href="https://github.com/Asterbin/xrdbench/releases">Releases</a> 下载并解压到 <code>datasets/</code>。</p>
-        <h3>为什么 CIF 文本不同仍然可以判对？</h3><p>同一结构可因 CIF 排版、origin choice 或 cell setting 不同而文本不同。XRDBench 不直接比较文本：它会解析 CIF，再按晶胞、元素和原子坐标进行结构匹配。内部 phase ID（例如 <code>MP:mp-123</code>）只用于数据审计。</p>
-        <h3>最快的跑通方式</h3><ol><li>从 Release 下载一个数据集；</li><li>用“读取一条谱图”代码检查安装；</li><li>生成几个 JSONL 预测；</li><li>运行评测并保存 <code>report.json</code>。</li></ol>
-      </section>
-    </article>
-  </main>
-  <footer>XRDBench · <a href="https://github.com/Asterbin/xrdbench">GitHub</a> · <a href="https://github.com/Asterbin/xrdbench/issues">Issues</a></footer>
+# structure is a pymatgen.core.Structure object
+CifWriter(structure).write_file("outputs/cifs/sample-phase-1.cif")</code></pre><p><span class="tag">Helper</span> <a href="../domo/README.zh-CN.md">domo/make_submission.py</a> <span class="lang-zh">提供现有 CIF、pymatgen Structure、CIF 文本和 legacy ID 的完整示例。</span><span class="lang-en"> provides complete examples for existing CIFs, pymatgen Structures, CIF text, and legacy IDs.</span></p></section>
+    <section id="submit"><h2 class="lang-zh">写入 submission.jsonl 并评测</h2><h2 class="lang-en">Write submission.jsonl and evaluate</h2><p class="lang-zh">一行一个样本。单相提交一个 CIF；多相提交 2–3 个 CIF。</p><p class="lang-en">Write one sample per line. Submit one CIF for a single phase and two or three CIFs for a mixture.</p><pre><code>{"sample_id":"rruff-single-000000","prediction":{"structure_files":["outputs/cifs/one.cif"]}}
+{"sample_id":"rruff-multi-000000","prediction":{"structure_files":["outputs/cifs/a.cif","outputs/cifs/b.cif"]}}</code></pre><pre><code>xrdbench evaluation/hidden-test.jsonl outputs/submission.jsonl \
+  --data-root . \
+  --output outputs/report.json</code></pre><p class="lang-zh">评测器读取预测 CIF 和隐藏真解 CIF，依据晶胞、元素与原子坐标进行一对一匹配。多报相降低 precision，漏相降低 recall；所有相恰好匹配时 <code>exact_match</code> 才为 true。</p><p class="lang-en">The evaluator reads predicted and hidden-reference CIFs and makes one-to-one matches using cell, species, and atomic coordinates. Extra phases lower precision, missing phases lower recall, and <code>exact_match</code> is true only when every phase matches.</p></section>
+    <section id="results"><h2 class="lang-zh">理解评测报告</h2><h2 class="lang-en">Read the evaluation report</h2><p class="lang-zh">`report.json` 包含汇总分数和逐样本诊断。汇总用于比较模型；逐样本结果用于定位漏相、误报或无效 CIF。</p><p class="lang-en">`report.json` contains aggregate scores and per-sample diagnostics. Use the summary to compare models and the sample records to locate missing phases, extra phases, or invalid CIFs.</p><pre><code>{
+  "summary": {
+    "identification.multi": {
+      "coverage": 1.0,
+      "exact_match_rate": 0.52,
+      "macro_precision": 0.80,
+      "macro_recall": 0.73,
+      "macro_f1": 0.75
+    }
+  },
+  "samples": [{"validation_mode": "cif_structure_match"}]
+}</code></pre><table><thead><tr><th>Field</th><th class="lang-zh">含义</th><th class="lang-en">Meaning</th></tr></thead><tbody><tr><td>coverage</td><td class="lang-zh">完成预测的样本比例</td><td class="lang-en">Fraction of samples with a prediction</td></tr><tr><td>exact_match_rate</td><td class="lang-zh">全部相一对一正确的比例</td><td class="lang-en">Fraction with every phase matched one-to-one</td></tr><tr><td>macro_f1</td><td class="lang-zh">逐样本 F1 的平均</td><td class="lang-en">Mean of per-sample F1 values</td></tr><tr><td>validation_mode</td><td class="lang-zh">应为 cif_structure_match</td><td class="lang-en">Should be cif_structure_match for CIF submissions</td></tr></tbody></table></section>
+    <section id="refinement"><h2 class="lang-zh">精修评测</h2><h2 class="lang-en">Refinement evaluation</h2><p class="lang-zh">精修模型输出的是计算谱而非 CIF。实验谱和计算谱均为两列：<code>two_theta_deg intensity</code>。</p><p class="lang-en">A refinement model outputs a calculated pattern rather than a CIF. Both experimental and calculated files are two-column: <code>two_theta_deg intensity</code>.</p><pre><code>xrdinspector refine experimental.xy calculated.xy</code></pre><p class="lang-zh"><code>Rp</code> 与 <code>Rwp</code> 越低越好，相关系数越接近 1 越好。分数衡量谱图拟合质量，不能单独证明结构的化学正确性。</p><p class="lang-en">Lower <code>Rp</code> and <code>Rwp</code> are better, while correlation should approach 1. The score measures pattern agreement; it does not by itself prove chemical correctness.</p></section>
+    <section id="faq"><h2 class="lang-zh">常见问题</h2><h2 class="lang-en">FAQ</h2><h3 class="lang-zh">找不到 patterns.h5</h3><h3 class="lang-en">patterns.h5 is missing</h3><p class="lang-zh">数据不会随 Git clone 下载。请从 Releases 下载并解压到 <code>datasets/</code>。</p><p class="lang-en">Datasets are not cloned with Git. Download a Release archive and extract it into <code>datasets/</code>.</p><h3 class="lang-zh">为什么不直接比较 CIF 文本？</h3><h3 class="lang-en">Why not compare CIF text?</h3><p class="lang-zh">同一结构可有不同排版、origin choice 或 cell setting。XRDBench 比较解析后的结构，因此这些文本差异不会造成误判。</p><p class="lang-en">The same structure can have different formatting, origin choices, or cell settings. XRDBench compares parsed structures, preventing false mismatches from textual differences.</p><h3 class="lang-zh">最快如何跑通？</h3><h3 class="lang-en">What is the fastest end-to-end check?</h3><ol class="steps"><li><span class="lang-zh">下载一个 Release 数据包。</span><span class="lang-en">Download one Release dataset.</span></li><li><span class="lang-zh">运行“读取 XRD 数据”中的 Python 代码。</span><span class="lang-en">Run the Python snippet in “Read XRD data”.</span></li><li><span class="lang-zh">用模型生成一个 CIF 和一行 JSONL。</span><span class="lang-en">Generate one CIF and one JSONL record.</span></li><li><span class="lang-zh">在验证集运行评测并检查 report.json。</span><span class="lang-en">Run evaluation on validation data and inspect report.json.</span></li></ol></section>
+  </article></main><footer>XRDBench · <a href="https://github.com/Asterbin/xrdbench">GitHub</a> · <a href="https://github.com/Asterbin/xrdbench/issues">Issues</a></footer>
+  <script>
+    function setLanguage(language) {
+      document.documentElement.dataset.lang = language;
+      document.querySelectorAll('.switch button').forEach(button => button.classList.toggle('active', button.id === language));
+      document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
+      localStorage.setItem('xrdbench-language', language);
+    }
+    setLanguage(localStorage.getItem('xrdbench-language') || 'en');
+    const sections = document.querySelectorAll('article section');
+    sections.forEach(section => section.classList.add('reveal'));
+    const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    }), { threshold: 0.08 });
+    sections.forEach(section => observer.observe(section));
+  </script>
 </body>
 </html>
