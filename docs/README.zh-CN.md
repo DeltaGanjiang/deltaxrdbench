@@ -57,7 +57,7 @@ Models should submit standard CIF files rather than internal database IDs. XRDBe
 
 Single-phase samples require one CIF. Multi-phase samples require two or three CIFs. The filename and textual CIF formatting do not affect the result. Internal phase IDs remain available only for compatibility and dataset auditing.
 
-See [submission.jsonl examples](../domo/README.zh-CN.md) for CIF paths, pymatgen `Structure` objects, CIF text, and legacy phase-ID submissions.
+See [submission.jsonl examples](../domo/README.md) for CIF paths, pymatgen `Structure` objects, CIF text, and legacy phase-ID submissions.
 
 ## Dataset contents
 
