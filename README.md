@@ -12,6 +12,8 @@ New to the project? Start with the [bilingual step-by-step HTML guide](docs/GETT
 
 Need to write a model output? See the [submission.jsonl examples](domo/README.zh-CN.md).
 
+Want a visual tour of every dataset and both task modes? Open [explore_datasets.ipynb](explore_datasets.ipynb) in Jupyter. It displays two single-phase and two multi-phase examples from MP500, RRUFF, and opXRD, including their XRD patterns and reference structures.
+
 ## What it evaluates
 
 | Track | Input | Ground truth | Metrics |
