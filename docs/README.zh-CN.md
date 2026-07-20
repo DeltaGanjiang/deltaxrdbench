@@ -7,6 +7,8 @@
 
 [English](../README.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
 
+新手请先阅读：[完整中文使用说明](GETTING_STARTED.zh-CN.md)
+
 ## 评测内容
 
 | 任务 | 输入 | 真解 | 指标 |
