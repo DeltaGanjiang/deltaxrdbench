@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="XRDBench 中文新手使用说明">
+  <title>XRDBench 新手使用说明</title>
+  <style>
+    :root { color-scheme: light dark; --bg:#f8fafc; --paper:#fff; --text:#172033; --muted:#5d6778; --line:#dce3ed; --accent:#2563eb; --code:#0f172a; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif; }
+    header { background:linear-gradient(135deg,#0f2a5c,#2563eb); color:#fff; padding:56px 24px 46px; }
+    header > div, main { max-width:1080px; margin:auto; }
+    h1 { font-size:clamp(2rem,5vw,3.4rem); margin:0 0 8px; letter-spacing:-.04em; }
+    h2 { margin:48px 0 14px; font-size:1.65rem; scroll-margin-top:24px; }
+    h3 { margin:26px 0 8px; font-size:1.15rem; }
+    p { margin:10px 0; } a { color:var(--accent); } header a { color:#dbeafe; }
+    .language, .badges { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+    .language a, .badge { border:1px solid rgba(255,255,255,.35); border-radius:999px; padding:4px 12px; text-decoration:none; font-size:.88rem; }
+    main { display:grid; grid-template-columns:230px minmax(0,1fr); gap:36px; padding:34px 24px 72px; }
+    nav { position:sticky; top:18px; height:max-content; border-left:2px solid var(--line); padding-left:14px; }
+    nav a { display:block; font-size:.9rem; line-height:1.45; margin:8px 0; text-decoration:none; color:var(--muted); }
+    article { background:var(--paper); border:1px solid var(--line); border-radius:16px; padding:20px 38px 44px; box-shadow:0 8px 28px rgba(15,23,42,.05); }
+    table { width:100%; border-collapse:collapse; margin:14px 0; font-size:.94rem; }
+    th,td { padding:10px 12px; text-align:left; vertical-align:top; border:1px solid var(--line); }
+    th { background:#eff6ff; } code { font-family:"SFMono-Regular",Consolas,monospace; font-size:.88em; }
+    pre { overflow:auto; padding:15px 17px; border-radius:10px; background:var(--code); color:#e2e8f0; line-height:1.55; }
+    .note { border-left:4px solid #f59e0b; background:#fffbeb; padding:13px 16px; border-radius:0 8px 8px 0; }
+    .download { display:inline-block; background:#16a34a; color:#fff; border-radius:8px; padding:10px 16px; text-decoration:none; font-weight:650; margin:8px 0; }
+    ol,ul { padding-left:1.35rem; } li { margin:5px 0; }
+    footer { text-align:center; padding:24px; color:var(--muted); font-size:.9rem; }
+    @media (max-width:800px) { main { display:block; padding:20px 13px 44px; } nav { display:none; } article { padding:12px 20px 30px; border-radius:10px; } header { padding:40px 20px; } }
+    @media (prefers-color-scheme:dark) { :root { --bg:#0b1220; --paper:#111b2e; --text:#e7edf8; --muted:#b7c0cf; --line:#2b3a53; --accent:#93c5fd; --code:#070d19; } th { background:#172a4c; } .note { background:#3d300c; } }
+  </style>
+</head>
+<body>
+  <header><div>
+    <h1>XRDBench 新手使用说明</h1>
+    <p>从下载 XRD 数据到提交模型结果的完整上手流程。</p>
+    <div class="language">
+      <a href="../README.md">English</a><a href="README.zh-CN.md">中文简介</a><a href="GETTING_STARTED.zh-CN.md">Markdown 版</a><a href="README.ja.md">日本語</a><a href="README.ko.md">한국어</a>
+    </div>
+  </div></header>
+  <main>
+    <nav aria-label="目录">
+      <a href="#what">项目是什么</a><a href="#install">安装</a><a href="#data">下载数据</a><a href="#read">读取谱图</a><a href="#submit">提交模型结果</a><a href="#evaluate">运行评测</a><a href="#refine">精修评测</a><a href="#build">重建数据</a><a href="#faq">常见问题</a>
+    </nav>
+    <article>
+      <section id="what"><h2>项目是什么</h2>
+        <p>XRDBench 是一个面向 X 射线衍射（XRD）结果的可复现评测基准。任何模型都可以接入：传统数据库检索、机器学习模型、LLM agent 或自定义规则程序。模型只需要读取谱图，并写出规定格式的 JSONL 预测文件。</p>
+        <table><thead><tr><th>任务</th><th>输入</th><th>真解</th><th>指标</th></tr></thead><tbody>
+          <tr><td>单相识别</td><td>一条 XRD 谱图</td><td>一个规范 phase ID</td><td>Accuracy / exact match</td></tr>
+          <tr><td>多相识别</td><td>一条混合 XRD 谱图</td><td>2–3 个 phase ID 的集合</td><td>Precision、Recall、F1、exact match</td></tr>
+          <tr><td>精修</td><td>实验谱与计算谱</td><td>不要求结构真解</td><td>Rp、Rwp、相关系数、XRDinspector score</td></tr>
+        </tbody></table>
+        <p>多相样本最多三个相，且每个相的混合比例均不低于 10%。phase ID 数量就是该样本的晶相数量。</p>
+      </section>
+
+      <section id="install"><h2>安装</h2>
+        <h3>获取项目</h3>
+        <pre><code>git clone --recurse-submodules https://github.com/Asterbin/xrdbench.git
+cd xrdbench</code></pre>
+        <p>如果忘记使用 <code>--recurse-submodules</code>，补运行：</p>
+        <pre><code>git submodule update --init --recursive</code></pre>
+        <h3>创建环境</h3>
+        <pre><code>conda create -n xrdbench python=3.11 -y
+conda activate xrdbench
+pip install -e ./XRDinspector -e .
+xrdbench --help
+xrdbench-prepare --help</code></pre>
+        <p>命令不在 PATH 时可使用 <code>python -m xrdbench.cli --help</code> 和 <code>python -m xrdbench.prepare --help</code>。</p>
+      </section>
+
+      <section id="data"><h2>下载数据集</h2>
+        <p>大型 HDF5 数据不会随 <code>git clone</code> 提供。请从 GitHub Releases 下载后解压到 <code>datasets/</code>。</p>
+        <a class="download" href="https://github.com/Asterbin/xrdbench/releases">前往 GitHub Releases 下载数据集</a>
+        <pre><code>datasets/
+├── mp500/   # 模拟：10,000 单相 + 30,000 多相
+├── rruff/   # 实验：结构–谱图对 + 10,000 多相
+└── opxrd/   # 实验：结构–谱图对 + 10,000 多相</code></pre>
+        <p>每个目录均包含 <code>patterns.h5</code>、<code>manifest.jsonl</code> 和 <code>structures/</code>。请记录所用 Release 版本和校验和，保证训练与评测可复现。</p>
+      </section>
+
+      <section id="read"><h2>读取一条谱图</h2>
+        <p>所有谱图统一到 10–80° 2θ、0.01° 步长，共 7,001 个点。<code>patterns.h5</code> 保存数值，<code>manifest.jsonl</code> 将样本 ID 映射到 HDF5 行和标签。</p>
+        <pre><code>import json
+from pathlib import Path
+import h5py
+
+root = Path("datasets/rruff")
+record = json.loads((root / "manifest.jsonl").read_text().splitlines()[0])
+
+with h5py.File(root / record["input"]["archive"], "r") as h5:
+    two_theta = h5["two_theta_deg"][:]
+    intensity = h5[record["input"]["dataset"]][record["input"]["index"]]
+
+print(record["sample_id"], record["task"])
+print(two_theta.shape, intensity.shape)  # (7001,), (7001,)</code></pre>
+        <div class="note"><strong>重要：</strong>测试集的 <code>ground_truth</code> 只能由评测端保存，不能提供给模型。公开给模型时只提供谱图、sample ID 和允许使用的元数据。</div>
+      </section>
+
+      <section id="submit"><h2>提交模型结果</h2>
+        <p>预测文件为 UTF-8 JSONL：每行一个样本，且 <code>sample_id</code> 必须对应数据集。单相只能提交一个 ID；多相提交无序 ID 集合。</p>
+        <pre><code>{"sample_id":"rruff-single-000000","prediction":{"phase_ids":["RRUFF:R120044"]}}
+{"sample_id":"rruff-multi-000000","prediction":{"phase_ids":["RRUFF:R120044","RRUFF:R040120"]}}</code></pre>
+        <p>多报相会降低 precision，漏相会降低 recall，只有完整集合一致才算 exact match。漏交样本会记为 <code>missing_prediction</code> 并按零分进入汇总。</p>
+      </section>
+
+      <section id="evaluate"><h2>运行识别评测</h2>
+        <pre><code>xrdbench path/to/evaluation-dataset.jsonl submission.jsonl --output report.json</code></pre>
+        <p><code>report.json</code> 的 <code>summary</code> 用于比较模型；<code>samples</code> 是逐样本诊断结果。</p>
+        <ul><li><code>coverage</code>：实际完成预测的样本比例。</li><li><code>exact_match_rate</code>：预测相集合与真解完全相同的比例。</li><li><code>macro_f1</code>：逐样本 F1 的平均值。</li></ul>
+      </section>
+
+      <section id="refine"><h2>精修评测</h2>
+        <p>精修输入为实验谱和计算谱，两者均是两列文本：<code>two_theta_deg intensity</code>。</p>
+        <pre><code>xrdinspector refine experimental.xy calculated.xy</code></pre>
+        <p>输出的 <code>Rp</code>、<code>Rwp</code> 越低越好，<code>correlation</code> 越接近 1 越好。<code>score</code> 是 0–100 的连续质量分数。它衡量谱图一致性，不单独证明结构的物理正确性。</p>
+      </section>
+
+      <section id="build"><h2>自己重建数据（高级）</h2>
+        <pre><code>xrdbench-prepare rruff RRUFF.db datasets/rruff --mixtures 10000 --seed 20260720
+xrdbench-prepare mp500 MP500.db datasets/mp500 --single-count 10000 --mixtures 30000 --seed 20260720
+xrdbench-prepare opxrd-json opxrd datasets/opxrd --mixtures 10000 --seed 20260720</code></pre>
+        <p>固定 <code>--seed</code> 可以复现实验。生成的大型数据请通过 GitHub Releases、对象存储或 DOI 归档发布，而不是直接提交到 Git。</p>
+      </section>
+
+      <section id="faq"><h2>常见问题</h2>
+        <h3>找不到 patterns.h5</h3><p>数据集不在 Git clone 内，请从 <a href="https://github.com/Asterbin/xrdbench/releases">Releases</a> 下载并解压到 <code>datasets/</code>。</p>
+        <h3>为什么用 phase ID，而不是直接比较 CIF？</h3><p>同一结构可因 CIF 排版、origin choice 或 cell setting 不同而文本不同。稳定的 canonical phase ID（例如 <code>MP:mp-123</code>、<code>RRUFF:R120044</code>）可以避免误判。</p>
+        <h3>最快的跑通方式</h3><ol><li>从 Release 下载一个数据集；</li><li>用“读取一条谱图”代码检查安装；</li><li>生成几个 JSONL 预测；</li><li>运行评测并保存 <code>report.json</code>。</li></ol>
+      </section>
+    </article>
+  </main>
+  <footer>XRDBench · <a href="https://github.com/Asterbin/xrdbench">GitHub</a> · <a href="https://github.com/Asterbin/xrdbench/issues">Issues</a></footer>
+</body>
+</html>

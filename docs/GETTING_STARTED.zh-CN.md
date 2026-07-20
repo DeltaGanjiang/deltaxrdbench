@@ -4,6 +4,8 @@ XRDBench 是一个用于评测 XRD 模型结果的项目。它不限制模型类
 
 [English](../README.md) · [简体中文](GETTING_STARTED.zh-CN.md) · [项目中文简介](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
 
+需要直接在浏览器阅读？打开 [HTML 版本](GETTING_STARTED.zh-CN.html)。
+
 ## 1. 你会得到什么
 
 项目包含三类数据来源，每类都分为单相和多相识别样本：
