@@ -1,0 +1,3 @@
+[submodule "XRDinspector"]
+	path = XRDinspector
+	url = https://github.com/Asterbin/XRDinspector.git

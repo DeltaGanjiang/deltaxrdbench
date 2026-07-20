@@ -1,0 +1,23 @@
+# Python and test artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+
+# Operating-system and editor files
+.DS_Store
+.idea/
+.vscode/
+
+# Source and generated XRD data are large and must be versioned through
+# an external dataset registry/release, not Git history.
+MP500.db
+RRUFF.db
+opxrd/
+datasets/*
+!datasets/README.md
+
+# Local build output
+build/
+dist/
+*.egg-info/
