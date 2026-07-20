@@ -108,9 +108,11 @@ def _write_dataset(output: Path, source: str, grid: np.ndarray, patterns: np.nda
         handle.create_dataset("multi_phase_fractions", data=fractions, compression="gzip")
     with (output / "manifest.jsonl").open("w", encoding="utf-8") as file:
         for index, phase_id in enumerate(phase_ids):
-            file.write(json.dumps({"sample_id": f"{source}-single-{index:06d}", "task": "identification.single", "input": {"archive": "patterns.h5", "dataset": "single_intensity", "index": index}, "ground_truth": {"phase_ids": [phase_id]}, "metadata": {"source": source, "structure": f"structures/{phase_id.replace(':', '_')}.cif"}}) + "\n")
+            structure_path = f"structures/{phase_id.replace(':', '_')}.cif"
+            file.write(json.dumps({"sample_id": f"{source}-single-{index:06d}", "task": "identification.single", "input": {"archive": "patterns.h5", "dataset": "single_intensity", "index": index}, "ground_truth": {"phase_ids": [phase_id], "structure_files": [structure_path]}, "metadata": {"source": source, "structure": structure_path}}) + "\n")
         for index, ids in enumerate(labels):
-            file.write(json.dumps({"sample_id": f"{source}-multi-{index:06d}", "task": "identification.multi", "input": {"archive": "patterns.h5", "dataset": "multi_intensity", "index": index}, "ground_truth": {"phase_ids": ids}, "metadata": {"source": source, "fractions": fractions[index, :len(ids)].round(8).tolist()}}) + "\n")
+            structure_paths = [f"structures/{phase_id.replace(':', '_')}.cif" for phase_id in ids]
+            file.write(json.dumps({"sample_id": f"{source}-multi-{index:06d}", "task": "identification.multi", "input": {"archive": "patterns.h5", "dataset": "multi_intensity", "index": index}, "ground_truth": {"phase_ids": ids, "structure_files": structure_paths}, "metadata": {"source": source, "fractions": fractions[index, :len(ids)].round(8).tolist()}}) + "\n")
     (output / "README.md").write_text(f"# {source} dataset\n\n`patterns.h5` holds a common 2θ grid and normalized intensity vectors. `manifest.jsonl` maps each vector to its phase labels. Mixtures contain two or three distinct phases; every stored phase fraction is at least 0.10. Random seed: {seed}.\n", encoding="utf-8")
 
 

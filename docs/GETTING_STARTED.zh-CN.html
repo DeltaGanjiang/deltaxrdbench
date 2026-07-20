@@ -79,6 +79,7 @@ xrdbench-prepare --help</code></pre>
 ├── rruff/   # 实验：结构–谱图对 + 10,000 多相
 └── opxrd/   # 实验：结构–谱图对 + 10,000 多相</code></pre>
         <p>每个目录均包含 <code>patterns.h5</code>、<code>manifest.jsonl</code> 和 <code>structures/</code>。请记录所用 Release 版本和校验和，保证训练与评测可复现。</p>
+        <table><thead><tr><th>数据集</th><th>单相数量</th><th>多相数量</th><th>说明</th></tr></thead><tbody><tr><td>MP500</td><td>10,000</td><td>30,000</td><td>Cu Kα 模拟谱；结构原子数不超过 100</td></tr><tr><td>RRUFF</td><td>1,282</td><td>10,000</td><td>可恢复晶体结构的实验结构–谱图对</td></tr><tr><td>opXRD</td><td>880</td><td>10,000</td><td>可解析单相晶体结构的实验谱图</td></tr></tbody></table>
       </section>
 
       <section id="read"><h2>读取一条谱图</h2>
@@ -100,7 +101,11 @@ print(two_theta.shape, intensity.shape)  # (7001,), (7001,)</code></pre>
       </section>
 
       <section id="submit"><h2>提交模型结果</h2>
-        <p>预测文件为 UTF-8 JSONL：每行一个样本，且 <code>sample_id</code> 必须对应数据集。单相只能提交一个 ID；多相提交无序 ID 集合。</p>
+        <p>预测文件为 UTF-8 JSONL：每行一个样本，且 <code>sample_id</code> 必须对应数据集。推荐提交模型生成的标准 CIF 文件，而不是猜测内部 RRUFF 或 MP ID。</p>
+        <pre><code>{"sample_id":"rruff-single-000000","prediction":{"structure_files":["predictions/one.cif"]}}
+{"sample_id":"rruff-multi-000000","prediction":{"structure_files":["predictions/a.cif","predictions/b.cif"]}}</code></pre>
+        <p>单相必须提交一个 CIF，多相提交 2–3 个 CIF。CIF 应为 UTF-8、包含晶胞参数、元素和分数坐标的标准晶体文件。评测器会解析预测 CIF 和隐藏真解 CIF，并按晶胞、元素和原子坐标进行一对一结构匹配；文件名、文本排版和内部 phase ID 不影响结果。</p>
+        <p>如果模型已经知道数据库 ID，也可以使用兼容接口：</p>
         <pre><code>{"sample_id":"rruff-single-000000","prediction":{"phase_ids":["RRUFF:R120044"]}}
 {"sample_id":"rruff-multi-000000","prediction":{"phase_ids":["RRUFF:R120044","RRUFF:R040120"]}}</code></pre>
         <p>多报相会降低 precision，漏相会降低 recall，只有完整集合一致才算 exact match。漏交样本会记为 <code>missing_prediction</code> 并按零分进入汇总。</p>

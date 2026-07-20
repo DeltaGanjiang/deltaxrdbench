@@ -8,7 +8,7 @@
 
 [English](README.md) · [简体中文](docs/README.zh-CN.md) · [日本語](docs/README.ja.md) · [한국어](docs/README.ko.md)
 
-New to the project? Start with the [Chinese step-by-step guide](docs/GETTING_STARTED.zh-CN.md).
+New to the project? Start with the [Chinese step-by-step HTML guide](docs/GETTING_STARTED.zh-CN.html).
 
 ## What it evaluates
 

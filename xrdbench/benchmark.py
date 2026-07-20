@@ -67,6 +67,47 @@ def _resolve_file(value: Any, root: Path, field: str, sample_id: str) -> Path:
     return path
 
 
+def _structure_files(value: Any, root: Path, field: str, sample_id: str) -> list[Path]:
+    if not isinstance(value, list) or not value:
+        raise ValueError(f"sample {sample_id}: {field} must be a non-empty list of CIF file paths")
+    return [_resolve_file(item, root, field, sample_id) for item in value]
+
+
+def _maximum_structure_matches(predicted: list[Path], reference: list[Path]) -> int:
+    """Return a one-to-one maximum CIF match count using pymatgen."""
+    from ase.io import read
+    from pymatgen.analysis.structure_matcher import StructureMatcher
+    from pymatgen.core import Structure
+    from pymatgen.io.ase import AseAtomsAdaptor
+
+    matcher = StructureMatcher(ltol=0.2, stol=0.3, angle_tol=5)
+
+    def load(path: Path):
+        try:
+            return Structure.from_file(path)
+        except ValueError:
+            # Some legacy ASE CIF exports encode site multiplicities as
+            # occupancies. ASE can recover these files reliably.
+            return AseAtomsAdaptor.get_structure(read(path))
+
+    predicted_structures = [load(path) for path in predicted]
+    reference_structures = [load(path) for path in reference]
+    edges = [[right for right, candidate in enumerate(reference_structures) if matcher.fit(item, candidate)] for item in predicted_structures]
+    assigned: dict[int, int] = {}
+
+    def assign(left: int, visited: set[int]) -> bool:
+        for right in edges[left]:
+            if right in visited:
+                continue
+            visited.add(right)
+            if right not in assigned or assign(assigned[right], visited):
+                assigned[right] = left
+                return True
+        return False
+
+    return sum(assign(left, set()) for left in range(len(predicted)))
+
+
 def evaluate(dataset: str | Path, submission: str | Path, *, data_root: str | Path | None = None) -> BenchmarkReport:
     """Evaluate a JSONL model submission against a JSONL dataset manifest.
 
@@ -102,19 +143,33 @@ def evaluate(dataset: str | Path, submission: str | Path, *, data_root: str | Pa
         if not isinstance(prediction, dict):
             raise ValueError(f"sample {sample_id}: prediction must be an object")
         if task in IDENTIFICATION_TASKS:
-            expected = _phase_ids(item.get("ground_truth", {}).get("phase_ids"), "ground_truth.phase_ids", sample_id)
-            predicted = _phase_ids(prediction.get("phase_ids"), "prediction.phase_ids", sample_id)
-            if task == "identification.single" and (len(expected) != 1 or len(predicted) != 1):
-                raise ValueError(f"sample {sample_id}: a single-phase task requires exactly one phase ID")
-            true_positive = len(expected & predicted)
-            precision = true_positive / len(predicted)
-            recall = true_positive / len(expected)
+            truth = item.get("ground_truth", {})
+            expected = _phase_ids(truth.get("phase_ids"), "ground_truth.phase_ids", sample_id)
+            if "structure_files" in prediction:
+                reference = _structure_files(truth.get("structure_files"), root, "ground_truth.structure_files", sample_id)
+                predicted_files = _structure_files(prediction["structure_files"], root, "prediction.structure_files", sample_id)
+                if task == "identification.single" and (len(reference) != 1 or len(predicted_files) != 1):
+                    raise ValueError(f"sample {sample_id}: a single-phase task requires exactly one CIF")
+                true_positive = _maximum_structure_matches(predicted_files, reference)
+                predicted_count = len(predicted_files)
+                truth_count = len(reference)
+                mode = "cif_structure_match"
+            else:
+                predicted = _phase_ids(prediction.get("phase_ids"), "prediction.phase_ids", sample_id)
+                if task == "identification.single" and (len(expected) != 1 or len(predicted) != 1):
+                    raise ValueError(f"sample {sample_id}: a single-phase task requires exactly one phase ID")
+                true_positive = len(expected & predicted)
+                predicted_count = len(predicted)
+                truth_count = len(expected)
+                mode = "phase_id"
+            precision = true_positive / predicted_count
+            recall = true_positive / truth_count
             f1 = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
             rows.append({
                 "sample_id": sample_id, "task": task, "status": "scored",
-                "exact_match": expected == predicted, "precision": round(precision, 6),
+                "validation_mode": mode, "exact_match": true_positive == predicted_count == truth_count, "precision": round(precision, 6),
                 "recall": round(recall, 6), "f1": round(f1, 6),
-                "true_positive": true_positive, "predicted_count": len(predicted), "truth_count": len(expected),
+                "true_positive": true_positive, "predicted_count": predicted_count, "truth_count": truth_count,
             })
         else:
             # Keep dataset preparation usable without importing the optional

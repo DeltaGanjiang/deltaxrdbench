@@ -7,7 +7,7 @@
 
 [English](../README.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
 
-新手请先阅读：[完整中文使用说明（Markdown）](GETTING_STARTED.zh-CN.md) · [HTML 版本](GETTING_STARTED.zh-CN.html)
+新手请先阅读：[完整中文 HTML 使用说明](GETTING_STARTED.zh-CN.html)
 
 ## 评测内容
 
