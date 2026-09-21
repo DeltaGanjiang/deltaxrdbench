@@ -370,7 +370,7 @@ def build_mp500(database: str | Path, output: str | Path, *, single_count: int =
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build standardized XRDBench datasets")
+    parser = argparse.ArgumentParser(description="Build standardized DeltaXRDbench datasets")
     command = parser.add_subparsers(dest="source", required=True)
     rruff = command.add_parser("rruff", help="Build RRUFF experimental patterns and mixtures")
     rruff.add_argument("database")

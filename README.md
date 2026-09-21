@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>XRDBench</h1>
+  <h1>DeltaXRDbench</h1>
   <p><strong>A reproducible benchmark for X-ray diffraction phase identification and refinement</strong></p>
   <p>Model-agnostic evaluation across simulated and experimental XRD datasets,<br>with structure-aware scoring against hidden reference CIFs.</p>
   <p>
@@ -8,7 +8,7 @@
     <a href="https://asterbin.github.io/xrdbench/"><img alt="Documentation" src="https://img.shields.io/badge/Docs-GitHub_Pages-2563eb?logo=githubpages&amp;logoColor=white"></a>
     <a href="https://github.com/Asterbin/xrdbench/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/Asterbin/xrdbench?style=flat&amp;logo=github"></a>
   </p>
-  <p><strong><a href="./README.md">英</a> · <a href="./docs/README.zh-CN.md">中</a> · <a href="./docs/README.ja.md">日</a> · <a href="./docs/README.ko.md">韩</a></strong></p>
+  <p><strong><a href="./README.md">English</a> · <a href="./docs/README.zh-CN.md">中文</a> · <a href="./docs/README.ja.md">日本語</a> · <a href="./docs/README.ko.md">한국어</a></strong></p>
   <p><a href="https://asterbin.github.io/xrdbench/">Getting started</a> · <a href="https://github.com/Asterbin/xrdbench/releases">Download datasets</a> · <a href="./domo/README.md">Submission format</a> · <a href="./explore_datasets.ipynb">Dataset notebook</a></p>
 </div>
 
@@ -20,7 +20,7 @@
 | :---: | :---: | :---: | :---: |
 | Hidden CIF matching | Any model or search system | Fixed manifests and seeds | XRD-only and XRD + composition |
 
-XRDBench evaluates predictions by their parsed crystal structures—not CIF filenames or text formatting. It supports ranked single-phase candidates, unordered multi-phase sets, and pattern-refinement outputs through one JSONL interface.
+DeltaXRDbench evaluates predictions by their parsed crystal structures—not CIF filenames or text formatting. It supports ranked single-phase candidates, unordered multi-phase sets, and pattern-refinement outputs through one JSONL interface.
 
 ## Benchmark tracks
 

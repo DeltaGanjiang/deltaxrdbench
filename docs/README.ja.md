@@ -1,11 +1,11 @@
-# XRDBench
+# DeltaXRDbench
 
 [![GitHub stars](https://img.shields.io/github/stars/Asterbin/xrdbench?style=social)](https://github.com/Asterbin/xrdbench/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Asterbin/xrdbench?style=social)](https://github.com/Asterbin/xrdbench/network/members)
 
 **X 線回折の相同定・リファインメント結果のための再現可能なベンチマークです。**
 
-**[英](../README.md) · [中](./README.zh-CN.md) · [日](./README.ja.md) · [韩](./README.ko.md)**
+**[English](../README.md) · [中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md)**
 
 ## 評価対象
 
@@ -34,7 +34,7 @@ pip install -e ./XRDinspector -e .
 xrdbench dataset.jsonl submissions/model-a.jsonl --output report.json
 ```
 
-モデルは内部相 ID ではなく標準 CIF のパスを JSONL に出力できます。XRDBench は予測 CIF を解析し、非公開の参照構造と照合します。
+モデルは内部相 ID ではなく標準 CIF のパスを JSONL に出力できます。DeltaXRDbench は予測 CIF を解析し、非公開の参照構造と照合します。
 
 ## データセットのダウンロード
 

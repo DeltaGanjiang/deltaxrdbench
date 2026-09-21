@@ -1,4 +1,4 @@
-"""Build an ASE structure database from XRDBench single-phase CIFs."""
+"""Build an ASE structure database from DeltaXRDbench single-phase CIFs."""
 
 from __future__ import annotations
 

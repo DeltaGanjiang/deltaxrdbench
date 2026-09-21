@@ -1,4 +1,4 @@
-"""Small helpers for writing XRDBench submission.jsonl files.
+"""Small helpers for writing DeltaXRDbench submission.jsonl files.
 
 Copy this file into a model project or import it from the repository root.
 """

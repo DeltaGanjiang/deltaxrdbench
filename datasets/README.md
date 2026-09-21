@@ -1,6 +1,6 @@
 # Dataset artifacts
 
-Generated datasets are intentionally excluded from Git because the pattern archives are large. Download the published archives from the [XRDBench Releases page](https://github.com/Asterbin/xrdbench/releases), then place each source under this directory:
+Generated datasets are intentionally excluded from Git because the pattern archives are large. Download the published archives from the [DeltaXRDbench Releases page](https://github.com/Asterbin/xrdbench/releases), then place each source under this directory:
 
 ```text
 datasets/

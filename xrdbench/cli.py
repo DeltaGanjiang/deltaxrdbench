@@ -1,4 +1,4 @@
-"""Command-line interface for XRDBench."""
+"""Command-line interface for DeltaXRDbench."""
 from __future__ import annotations
 import argparse
 import json

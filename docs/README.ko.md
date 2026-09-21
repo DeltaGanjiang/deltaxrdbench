@@ -1,11 +1,11 @@
-# XRDBench
+# DeltaXRDbench
 
 [![GitHub stars](https://img.shields.io/github/stars/Asterbin/xrdbench?style=social)](https://github.com/Asterbin/xrdbench/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Asterbin/xrdbench?style=social)](https://github.com/Asterbin/xrdbench/network/members)
 
 **X선 회절 상 식별 및 정련 결과를 위한 재현 가능한 벤치마크입니다.**
 
-**[英](../README.md) · [中](./README.zh-CN.md) · [日](./README.ja.md) · [韩](./README.ko.md)**
+**[English](../README.md) · [中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md)**
 
 ## 평가 항목
 
@@ -34,7 +34,7 @@ pip install -e ./XRDinspector -e .
 xrdbench dataset.jsonl submissions/model-a.jsonl --output report.json
 ```
 
-모델은 내부 상 ID 대신 표준 CIF 경로를 JSONL로 제출할 수 있습니다. XRDBench는 예측 CIF를 해석하여 비공개 기준 구조와 비교합니다.
+모델은 내부 상 ID 대신 표준 CIF 경로를 JSONL로 제출할 수 있습니다. DeltaXRDbench는 예측 CIF를 해석하여 비공개 기준 구조와 비교합니다.
 
 ## 데이터셋 다운로드
 
