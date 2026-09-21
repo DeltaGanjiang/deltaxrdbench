@@ -5,7 +5,7 @@
 
 **A reproducible benchmark for X-ray diffraction phase identification and refinement.**
 
-[English](https://github.com/Asterbin/xrdbench/blob/main/README.md) · [Overview](https://github.com/Asterbin/xrdbench/blob/main/docs/README.zh-CN.md) · [Japanese](https://github.com/Asterbin/xrdbench/blob/main/docs/README.ja.md) · [Korean](https://github.com/Asterbin/xrdbench/blob/main/docs/README.ko.md)
+**[英](../README.md) · [中](./README.zh-CN.md) · [日](./README.ja.md) · [韩](./README.ko.md)**
 
 For a browser-friendly bilingual walkthrough with one-click Chinese/English switching, open the [HTML getting-started guide](https://github.com/Asterbin/xrdbench/blob/main/docs/GETTING_STARTED.zh-CN.html).
 

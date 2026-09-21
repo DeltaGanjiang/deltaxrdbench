@@ -1,81 +1,109 @@
-# XRDBench
+<div align="center">
+  <h1>XRDBench</h1>
+  <p><strong>A reproducible benchmark for X-ray diffraction phase identification and refinement</strong></p>
+  <p>Model-agnostic evaluation across simulated and experimental XRD datasets,<br>with structure-aware scoring against hidden reference CIFs.</p>
+  <p>
+    <a href="https://www.python.org/"><img alt="Python 3.9+" src="https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&amp;logoColor=white"></a>
+    <a href="https://github.com/Asterbin/xrdbench/releases"><img alt="Datasets" src="https://img.shields.io/badge/Datasets-GitHub_Releases-2ea44f?logo=github"></a>
+    <a href="https://asterbin.github.io/xrdbench/"><img alt="Documentation" src="https://img.shields.io/badge/Docs-GitHub_Pages-2563eb?logo=githubpages&amp;logoColor=white"></a>
+    <a href="https://github.com/Asterbin/xrdbench/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/Asterbin/xrdbench?style=flat&amp;logo=github"></a>
+  </p>
+  <p><strong><a href="./README.md">英</a> · <a href="./docs/README.zh-CN.md">中</a> · <a href="./docs/README.ja.md">日</a> · <a href="./docs/README.ko.md">韩</a></strong></p>
+  <p><a href="https://asterbin.github.io/xrdbench/">Getting started</a> · <a href="https://github.com/Asterbin/xrdbench/releases">Download datasets</a> · <a href="./domo/README.md">Submission format</a> · <a href="./explore_datasets.ipynb">Dataset notebook</a></p>
+</div>
 
-[![GitHub stars](https://img.shields.io/github/stars/Asterbin/xrdbench?style=social)](https://github.com/Asterbin/xrdbench/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/Asterbin/xrdbench?style=social)](https://github.com/Asterbin/xrdbench/network/members)
-[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+---
 
-**A reproducible benchmark for X-ray diffraction phase identification and refinement.**
+## At a glance
 
-[English](https://github.com/Asterbin/xrdbench/blob/main/README.md) · [Overview](https://github.com/Asterbin/xrdbench/blob/main/docs/README.zh-CN.md) · [Japanese](https://github.com/Asterbin/xrdbench/blob/main/docs/README.ja.md) · [Korean](https://github.com/Asterbin/xrdbench/blob/main/docs/README.ko.md)
+| Structure-aware | Model-agnostic | Reproducible | Multimodal |
+| :---: | :---: | :---: | :---: |
+| Hidden CIF matching | Any model or search system | Fixed manifests and seeds | XRD-only and XRD + composition |
 
-New to the project? Start with the [bilingual step-by-step HTML guide](https://asterbin.github.io/xrdbench/), automatically published through GitHub Pages.
+XRDBench evaluates predictions by their parsed crystal structures—not CIF filenames or text formatting. It supports ranked single-phase candidates, unordered multi-phase sets, and pattern-refinement outputs through one JSONL interface.
 
-Need to write a model output? See the [submission.jsonl examples](https://github.com/Asterbin/xrdbench/blob/main/domo/README.md).
+## Benchmark tracks
 
-Want a visual tour of every dataset and both task modes? Open [explore_datasets.ipynb](https://github.com/Asterbin/xrdbench/blob/main/explore_datasets.ipynb) in Jupyter. It displays two single-phase and two multi-phase examples from MP500, RRUFF, and opXRD, including their XRD patterns and reference structures.
-
-## What it evaluates
-
-| Track | Input | Ground truth | Metrics |
+| Track | Model input | Hidden reference | Reported metrics |
 | --- | --- | --- | --- |
-| Single-phase identification | One XRD pattern | One hidden reference CIF | Top-1, Top-3, Top-5, MRR@5 |
-| Multi-phase identification | One mixed XRD pattern | Set of 2–3 hidden reference CIFs | Coverage, exact match, macro precision, recall, F1 |
-| Refinement | Experimental and calculated patterns | No structural answer required | Rp, Rwp, correlation, XRDinspector score |
+| **Single-phase identification** | XRD or XRD + composition | One reference CIF | Top-1, Top-3, Top-5, MRR@5 |
+| **Multi-phase identification** | Mixed XRD or XRD + composition | Set of 2–3 reference CIFs | Coverage, Exact, macro P/R/F1 |
+| **Refinement** | Experimental and calculated patterns | No structural answer required | Rp, Rwp, correlation, XRDinspector score |
 
-Each multi-phase sample contains two or three distinct phases, with every phase fraction at least 10%.
-The XRD-only and XRD + composition settings use the same metrics and are reported separately.
+Every multi-phase sample contains two or three distinct phases, each with a fraction of at least 10%. The XRD-only and XRD + composition settings use the same metrics and are reported separately.
 
-## Repository layout
+## Quick start
 
-```text
-xrdbench/
-├── xrdbench/          # Benchmark evaluation and dataset preparation package
-├── tests/             # Automated tests
-├── datasets/          # Generated artifacts (ignored by Git)
-└── XRDinspector/      # Pinned upstream dependency repository
-```
-
-Raw source data and generated HDF5 datasets are excluded from Git history. See [datasets/README.md](https://github.com/Asterbin/xrdbench/blob/main/datasets/README.md) for artifact conventions.
-
-## Download datasets
-
-Benchmark datasets are published as GitHub Release assets and are **not** included in `git clone`.
-
-[![Download from Releases](https://img.shields.io/badge/Datasets-GitHub%20Releases-2ea44f?logo=github)](https://github.com/Asterbin/xrdbench/releases)
-
-Download the required archive from the [Releases page](https://github.com/Asterbin/xrdbench/releases), extract it into `datasets/`, and preserve the directory names: `mp500`, `rruff`, and `opxrd`.
-
-## Install
+### 1. Install
 
 ```bash
+git clone --recurse-submodules https://github.com/Asterbin/xrdbench.git
+cd xrdbench
 pip install -e ./XRDinspector -e .
 ```
 
-## Evaluate a model
+### 2. Download a dataset
+
+Download an archive from [GitHub Releases](https://github.com/Asterbin/xrdbench/releases), then extract it under `datasets/` while preserving the `mp500`, `rruff`, or `opxrd` directory name.
+
+### 3. Evaluate a submission
 
 ```bash
-xrdbench dataset.jsonl submissions/model-a.jsonl --output report.json
+xrdbench dataset.jsonl submissions/model-a.jsonl \
+  --data-root . \
+  --output report.json
 ```
 
-The submission interface is model-agnostic: any model writes JSONL records with the correct `sample_id` and predicted CIF paths. XRDBench parses and structurally matches those CIFs to hidden reference structures; models do not need to know database-specific phase IDs. For a single-phase sample, list up to five structurally deduplicated CIFs in rank order. For a multi-phase sample, list an unordered, deduplicated set.
+## Submission format
+
+Each JSONL record pairs a benchmark `sample_id` with model output. Models can submit standard CIF files without knowing database-specific phase IDs.
 
 ```json
 {"sample_id":"rruff-single-000000","prediction":{"structure_files":["predictions/rank-1.cif","predictions/rank-2.cif"]}}
 ```
 
-Identification summary values are percentages. Single-phase Top-k is the fraction of scored samples with a first structural match at rank at most k; MRR@5 uses the reciprocal first-match rank. Candidate ranking and post-processing must be fixed without access to the hidden target. Multi-phase precision, recall, and F1 are sample-wise macro averages over scored mixtures, and exact match requires equality of the predicted and reference sets. Coverage is `100 * scored / total`. An explicitly submitted empty multi-phase set is scored with precision and F1 equal to zero, while an omitted sample is excluded from the conditional averages and lowers coverage. This omission convention also represents oracle filtering when no positive-fraction candidate is retained. The evaluator reports one run at a time; benchmark table entries combine the resulting percentages as an unweighted mean over three fixed seeds.
+- **Single phase:** submit up to five structurally deduplicated CIFs in rank order.
+- **Multi phase:** submit an unordered, structurally deduplicated CIF set.
+- **Explicit empty set:** scored as a zero-valued prediction.
+- **Omitted sample:** excluded from conditional averages and lowers multi-phase Coverage.
 
-## Dataset sources
+See the [complete submission guide](./domo/README.md) for CIF paths, `pymatgen.Structure` export, legacy phase IDs, and validation details.
 
-| Source | Type | Intended contents |
-| --- | --- | --- |
-| MP500 | Simulated | 10,000 single-phase Cu Kα patterns and 30,000 mixtures, using structures with ≤100 atoms |
-| RRUFF | Experimental | 1,164 usable single-phase structure–pattern pairs and 10,000 mixtures |
-| opXRD | Experimental | 880 usable single-phase structure–pattern pairs and 10,000 mixtures |
+<details>
+<summary><strong>Metric definitions and aggregation</strong></summary>
+
+Identification summaries are percentages. Single-phase Top-k records whether the first structural match appears by rank k, while MRR@5 averages the reciprocal first-match rank. Candidate ranking and post-processing must be fixed without access to the hidden target.
+
+Multi-phase precision, recall, and F1 are sample-wise macro averages over scored mixtures. Exact requires equality of the predicted and reference sets, and Coverage is `100 × N_scored / N`. Under oracle filtering, mixtures with no retained positive-fraction candidate are omitted from the conditional P/R/F1 averages and reflected through Coverage.
+
+The evaluator reports one run at a time. Benchmark table entries are unweighted means of percentage results from three fixed seeds.
+
+</details>
+
+## Datasets
+
+| Dataset | Pattern source | Single phase | Mixtures | Notes |
+| --- | --- | ---: | ---: | --- |
+| **MP500** | Simulated | 10,000 | 30,000 | Cu Kα; structures contain ≤100 atoms |
+| **RRUFF** | Experimental | 1,164 | 10,000 | Usable structure–pattern pairs |
+| **opXRD** | Experimental | 880 | 10,000 | Usable structure–pattern pairs |
+
+Dataset archives are release assets and are intentionally excluded from `git clone`. Artifact layout and conventions are documented in [datasets/README.md](./datasets/README.md).
+
+## Project map
+
+```text
+xrdbench/
+├── xrdbench/          # Evaluation and dataset preparation package
+├── domo/              # Submission examples and helper code
+├── tests/             # Automated evaluator tests
+├── datasets/          # Downloaded artifacts, excluded from Git
+└── XRDinspector/      # Pinned refinement-scoring dependency
+```
 
 ## Reproducibility
 
-Dataset manifests record source, pattern location, hidden reference CIF paths, internal audit IDs, and mixture fractions. Published releases should additionally record source snapshots, random seeds, preprocessing configuration, and SHA-256 checksums.
+Dataset manifests record source, pattern location, hidden reference CIF paths, internal audit IDs, and mixture fractions. Published releases should also record source snapshots, random seeds, preprocessing configuration, and SHA-256 checksums.
 
 ## License
 

@@ -5,7 +5,7 @@
 
 **X 線回折の相同定・リファインメント結果のための再現可能なベンチマークです。**
 
-[English](https://github.com/Asterbin/xrdbench/blob/main/README.md) · [简体中文](https://github.com/Asterbin/xrdbench/blob/main/docs/README.zh-CN.md) · [日本語](https://github.com/Asterbin/xrdbench/blob/main/docs/README.ja.md) · [한국어](https://github.com/Asterbin/xrdbench/blob/main/docs/README.ko.md)
+**[英](../README.md) · [中](./README.zh-CN.md) · [日](./README.ja.md) · [韩](./README.ko.md)**
 
 ## 評価対象
 

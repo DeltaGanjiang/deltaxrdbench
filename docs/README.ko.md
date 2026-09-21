@@ -5,7 +5,7 @@
 
 **X선 회절 상 식별 및 정련 결과를 위한 재현 가능한 벤치마크입니다.**
 
-[English](https://github.com/Asterbin/xrdbench/blob/main/README.md) · [简体中文](https://github.com/Asterbin/xrdbench/blob/main/docs/README.zh-CN.md) · [日本語](https://github.com/Asterbin/xrdbench/blob/main/docs/README.ja.md) · [한국어](https://github.com/Asterbin/xrdbench/blob/main/docs/README.ko.md)
+**[英](../README.md) · [中](./README.zh-CN.md) · [日](./README.ja.md) · [韩](./README.ko.md)**
 
 ## 평가 항목
 
