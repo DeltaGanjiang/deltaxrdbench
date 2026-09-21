@@ -10,9 +10,9 @@ This directory includes [make_submission.py](https://github.com/Asterbin/xrdbenc
 
 - `sample_id`: exactly matches the benchmark sample ID;
 - `prediction`: the model prediction object;
-- `prediction.structure_files`: the recommended field, containing one or more CIF file paths.
+- `prediction.structure_files`: the recommended field, containing CIF file paths.
 
-Submit one CIF for a single-phase task and two or three CIFs for a multi-phase task. A CIF must include cell parameters, species, and fractional atomic coordinates. File names are not scored.
+For a single-phase task, submit a ranked list of zero to five structurally deduplicated CIF candidates; list order determines Top-1, Top-3, Top-5, and MRR@5. For a multi-phase task, submit an unordered, structurally deduplicated CIF set. An empty submitted set is a scored prediction with zero precision, recall, and F1. Omit the entire sample only when it should be outside the conditional scored set; doing so lowers multi-phase coverage. A CIF must include cell parameters, species, and fractional atomic coordinates. File names are not scored.
 
 ```text
 outputs/
@@ -31,7 +31,10 @@ For example, if a model writes `outputs/cifs/single-000000.cif`, add it to JSONL
 from domo.make_submission import from_cif_paths, write_jsonl
 
 records = [
-    from_cif_paths("rruff-single-000000", ["outputs/cifs/single-000000.cif"]),
+    from_cif_paths(
+        "rruff-single-000000",
+        ["outputs/cifs/single-000000-rank-1.cif", "outputs/cifs/single-000000-rank-2.cif"],
+    ),
     from_cif_paths(
         "rruff-multi-000000",
         [
@@ -46,7 +49,7 @@ write_jsonl(records, "outputs/submission.jsonl")
 The output is:
 
 ```json
-{"sample_id":"rruff-single-000000","prediction":{"structure_files":["outputs/cifs/single-000000.cif"]}}
+{"sample_id":"rruff-single-000000","prediction":{"structure_files":["outputs/cifs/single-000000-rank-1.cif","outputs/cifs/single-000000-rank-2.cif"]}}
 {"sample_id":"rruff-multi-000000","prediction":{"structure_files":["outputs/cifs/multi-000000-phase-1.cif","outputs/cifs/multi-000000-phase-2.cif"]}}
 ```
 
@@ -121,4 +124,4 @@ for line in Path("outputs/submission.jsonl").read_text(encoding="utf-8").splitli
 print("submission paths look valid")
 ```
 
-The evaluator checks duplicate or missing sample IDs, phase-count rules, CIF readability, and one-to-one structure matches. Extra phases lower precision; missing phases lower recall; `exact_match` is true only when every reference phase is matched.
+The evaluator checks duplicate or missing sample IDs, the five-candidate single-phase limit, structural deduplication, CIF readability, and one-to-one structure matches. Identification summary metrics are percentages. For multi-phase samples, extra phases lower precision, missing phases lower recall, and `exact_match` is true only when the predicted and reference sets are equal.

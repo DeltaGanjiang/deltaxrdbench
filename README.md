@@ -18,11 +18,12 @@ Want a visual tour of every dataset and both task modes? Open [explore_datasets.
 
 | Track | Input | Ground truth | Metrics |
 | --- | --- | --- | --- |
-| Single-phase identification | One XRD pattern | One hidden reference CIF | CIF structure match / exact match |
-| Multi-phase identification | One mixed XRD pattern | Set of 2–3 hidden reference CIFs | Precision, recall, F1, exact match |
+| Single-phase identification | One XRD pattern | One hidden reference CIF | Top-1, Top-3, Top-5, MRR@5 |
+| Multi-phase identification | One mixed XRD pattern | Set of 2–3 hidden reference CIFs | Coverage, exact match, macro precision, recall, F1 |
 | Refinement | Experimental and calculated patterns | No structural answer required | Rp, Rwp, correlation, XRDinspector score |
 
 Each multi-phase sample contains two or three distinct phases, with every phase fraction at least 10%.
+The XRD-only and XRD + composition settings use the same metrics and are reported separately.
 
 ## Repository layout
 
@@ -56,11 +57,13 @@ pip install -e ./XRDinspector -e .
 xrdbench dataset.jsonl submissions/model-a.jsonl --output report.json
 ```
 
-The submission interface is model-agnostic: any model writes JSONL records with the correct `sample_id` and one or more predicted CIF paths. XRDBench parses and structurally matches those CIFs to hidden reference structures; models do not need to know database-specific phase IDs.
+The submission interface is model-agnostic: any model writes JSONL records with the correct `sample_id` and predicted CIF paths. XRDBench parses and structurally matches those CIFs to hidden reference structures; models do not need to know database-specific phase IDs. For a single-phase sample, list up to five structurally deduplicated CIFs in rank order. For a multi-phase sample, list an unordered, deduplicated set.
 
 ```json
-{"sample_id":"rruff-single-000000","prediction":{"structure_files":["predictions/result.cif"]}}
+{"sample_id":"rruff-single-000000","prediction":{"structure_files":["predictions/rank-1.cif","predictions/rank-2.cif"]}}
 ```
+
+Identification summary values are percentages. Single-phase Top-k is the fraction of scored samples with a first structural match at rank at most k; MRR@5 uses the reciprocal first-match rank. Candidate ranking and post-processing must be fixed without access to the hidden target. Multi-phase precision, recall, and F1 are sample-wise macro averages over scored mixtures, and exact match requires equality of the predicted and reference sets. Coverage is `100 * scored / total`. An explicitly submitted empty multi-phase set is scored with precision and F1 equal to zero, while an omitted sample is excluded from the conditional averages and lowers coverage. This omission convention also represents oracle filtering when no positive-fraction candidate is retained. The evaluator reports one run at a time; benchmark table entries combine the resulting percentages as an unweighted mean over three fixed seeds.
 
 ## Dataset sources
 

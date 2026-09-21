@@ -30,14 +30,21 @@ def write_jsonl(records: Iterable[dict], output: str | Path) -> Path:
 
 
 def from_cif_paths(sample_id: str, cif_paths: Sequence[str | Path]) -> dict:
-    """Create the recommended submission record from existing CIF files."""
+    """Create a submission record; an empty list is an explicit abstention."""
     paths = [Path(path) for path in cif_paths]
-    if not paths or not all(path.is_file() for path in paths):
-        raise ValueError("cif_paths must contain existing CIF files")
-    return {"sample_id": sample_id, "prediction": {"structure_files": [str(path) for path in paths]}}
+    if not all(path.is_file() for path in paths):
+        raise ValueError("every item in cif_paths must be an existing CIF file")
+    if len(set(paths)) != len(paths):
+        raise ValueError("cif_paths must not contain duplicate paths")
+    return {
+        "sample_id": sample_id,
+        "prediction": {"structure_files": [str(path) for path in paths]},
+    }
 
 
-def from_pymatgen_structures(sample_id: str, structures: Sequence, output_directory: str | Path) -> dict:
+def from_pymatgen_structures(
+    sample_id: str, structures: Sequence, output_directory: str | Path
+) -> dict:
     """Export pymatgen Structure objects as CIF files and create a record."""
     from pymatgen.io.cif import CifWriter
 
@@ -52,7 +59,7 @@ def from_pymatgen_structures(sample_id: str, structures: Sequence, output_direct
 
 
 def from_phase_ids(sample_id: str, phase_ids: Sequence[str]) -> dict:
-    """Legacy compatibility format when a model knows canonical database IDs."""
-    if not phase_ids or len(set(phase_ids)) != len(phase_ids):
-        raise ValueError("phase_ids must be non-empty and unique")
+    """Create a legacy-ID record; an empty list is an explicit abstention."""
+    if len(set(phase_ids)) != len(phase_ids):
+        raise ValueError("phase_ids must be unique")
     return {"sample_id": sample_id, "prediction": {"phase_ids": list(phase_ids)}}
